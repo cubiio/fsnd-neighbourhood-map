@@ -7,13 +7,7 @@
     <h1>This is the index page</h1>
     <p>This content is from the njk file</p>
 
-<div class="gallery">
-    {% for image in images %}
-        <div class="gallery__item">
-            <img src="{{image.src}}" alt="{{image.alt}}">
-        </div>
-    {% endfor %}
-</div>
+
 
 {% include "partials/footer.njk" %}
 

@@ -147,11 +147,11 @@ gulp.task('watch', function() {
         'app/data.json'
         ], ['nunjucks'])
     gulp.watch(config.sass.src, ['sass']);
-    gulp.watch(config.js.src, ['watch-js']);
+    // gulp.watch(config.js.src, ['watch-js']);
     gulp.watch(config.html.src, browserSync.reload);
 });
 
-gulp.task('watch-js', ['lint:js'], browserSync.reload);
+// gulp.task('watch-js', ['lint:js'], browserSync.reload);
 
 
 // clean dev

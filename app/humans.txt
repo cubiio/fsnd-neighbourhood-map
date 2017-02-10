@@ -3,14 +3,17 @@
 
 # TEAM
 
-    Sam Atkins -- Developer - @cubiio
+    Sam Atkins -- Developer 
+      - GitHub: @cubiio
+      - Twitter: @cubiio
 
 # THANKS
 
-    <name>
+    tbc :)
 
 # TECHNOLOGY COLOPHON
 
     CSS3, HTML5
-    Javascript
-    jQuery, Modernizr, Normalize.css
+    Javascript, Knockout.js
+    jQuery, modernizr, Normalize.css
+    

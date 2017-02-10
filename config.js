@@ -64,7 +64,7 @@ const config = {
 
 	surge: {
 		project: 'dist/',                       // folder for Surge content
-		domain: 'http://add-name.surge.sh/'  		// amend url
+		domain: 'http://add-name.surge.sh/'  	// amend url
 	},
 
 	useref: {
@@ -73,7 +73,7 @@ const config = {
 	},
 
 	psi: {
-		site: 'http://cubi.io'					// amend url for new project
+		site: 'http://www.example.com'			// amend url for new project
 		// key: 
 	}
 

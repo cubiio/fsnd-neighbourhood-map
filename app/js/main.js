@@ -4,6 +4,15 @@
 // use strict
 'use strict';
 
+var locations = [
+    {
+        name: "Olympia Stadium",
+        lat: 48.1731628,
+        lng: 11.5444149
+    }
+];
+
+
 // Async callback loads Google Map
 function initMap() {
     var munich = { 
@@ -11,33 +20,40 @@ function initMap() {
         lng: 11.5938205
     };
 
-    var deutschesMuseumLocation = {
-        lat: 48.1298317,
-        lng: 11.583414
-    };
+    var map = new google.maps.Map(document.getElementById('js_map'), {
+        zoom: 12,
+        center: munich
+    });
 
     var olympiaLocation = {
         lat: 48.1731628,
         lng: 11.5444149
     };
-    
-    var map = new google.maps.Map(document.getElementById('js_map'), {
-        zoom: 12,
-        center: munich
+
+    location.marker = new google.maps.Marker({
+        // position: olympiaLocation,
+        position: {lat: locations.lat, lng: locations.lng},
+        map: map
     });
     
-    // var marker = new google.maps.Marker({
-    //     position: munich,
+    // var olympiaStadium = new google.maps.Marker({
+    //     position: olympiaLocation,
     //     map: map
     // });
+};
 
-    var deutschesMuseum = new google.maps.Marker({
-        position: deutschesMuseumLocation,
-        map: map
-    });
+// var ViewModel = function() { };
 
-    var olympiaStadium = new google.maps.Marker({
-        position: olympiaLocation,
-        map: map
-    });
+
+
+// }
+
+
+// var vm = new ViewModel();
+
+// Maps API callback is to initApp
+// This function controls execution of the app
+var initApp = function() {
+    // ko.applyBindings(vm);
+    initMap();    
 }

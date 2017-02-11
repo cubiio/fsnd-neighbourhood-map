@@ -5,13 +5,15 @@ This is a front end project, part of my Udacity Full Stack Nanodegree.
 
 ### Built with:
 
+The project is still WIP but the intent is to use the below technologies.
+
 - HTML and Nunjucks templates
 - CSS, Flexbox
 - Javascript
 - Knockout.js
 - Gulp task runner
 
-APIs used:
+### APIs used:
 
 - [Google Maps APIs   |  Google Developers](https://developers.google.com/maps/)
 
@@ -32,6 +34,7 @@ The two key tasks are as follows:
 
 ```
 // default task is for dev 
+// this loads the app in the browser and live reloads after any changes
 $ gulp 
 
 // build task to create app in /dist folder
@@ -56,8 +59,7 @@ Thanks go to [ ] for help, support and coaching
 **Sources of info and inspiration:**
 
 - Google Maps API [tutorial](https://developers.google.com/maps/documentation/javascript/adding-a-google-map#key)
-- For scaffolding the app with baseline HTML5 and CSS [HTML5 Boilerplate](https://html5boilerplate.com/)
-- 
+- Scaffolding the app with [HTML5 Boilerplate](https://html5boilerplate.com/)
 
 
 **ToDO: Add more info to README**

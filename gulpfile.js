@@ -133,8 +133,8 @@ gulp.task('browserSync', function() {
         server: {
             baseDir: 'app'
         },
-        browser: 'google chrome canary',
-        notify: false
+        browser: config.browserSync.browser,
+        notify: config.browserSync.notify
     })
 })
 

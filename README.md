@@ -41,7 +41,7 @@ $ gulp
 $ gulp build
 ```
 
-Note, the default `gulp` dev task runs in Chrome Canary. To change this to a different browser, go to browser sync task and edit line 136:
+Note, the default `gulp` dev task runs in Chrome Canary. To change this to a different browser, open the `config.js` file and go to the browserSync settings. Edit line 4 to see your dev browser of choice:
 
 ```
 // current setting

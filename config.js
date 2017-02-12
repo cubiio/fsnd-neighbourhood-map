@@ -1,5 +1,10 @@
 const config = {
 
+	browserSync: {
+		browser: 'google chrome canary',
+		notify: true
+	},
+
 	fonts: {
 		src: 'app/fonts**/*',
 		dest: 'dist/fonts'

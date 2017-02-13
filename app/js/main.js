@@ -1,5 +1,5 @@
 /* jshint undef: true, unused: true */
-/* globals ko */
+/* globals ko, google */
 
 // use strict
 'use strict';
@@ -57,7 +57,7 @@ function initMap() {
         zoom: 13,
         center: munich
     });
-};
+}
 
 // Constructor 
 var Location = function(data) {
@@ -84,7 +84,7 @@ function toggleBounce(marker) {
             marker.setAnimation(null);
         }, 2100);  // 3 bounces then stops
     }
-};
+}
 
 var ViewModel = function() { 
     console.log('ViewModel invoked');
@@ -110,7 +110,7 @@ var ViewModel = function() {
 
     // Sets CSS class '.open' to true if false and vice versa.
     this.openDrawer = function() {
-        console.log("hamburgers!")
+        console.log("hamburgers!");
         self.toggleDrawer( !self.toggleDrawer() );
     };
 
@@ -124,4 +124,4 @@ var initApp = function() {
     ko.applyBindings(new ViewModel());
     // vm = new ViewModel();
     // ko.applyBindings(vm);
-}
+};

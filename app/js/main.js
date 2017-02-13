@@ -63,9 +63,26 @@ function initMap() {
 var Location = function(data) {
     this.name = data.name;
     this.marker = new google.maps.Marker({
+        map: map,
+        animation: google.maps.Animation.DROP,
         position: data.position,
-        map: map
+        // addListener('click', toggleBounce),
     });
+    // this.marker.addListener('click', toggleBounce);
+    this.marker.addListener('click', function() {
+        console.log('marker clicked!');
+        toggleBounce(this.marker);
+        // toggleBounce.apply(marker);
+    });
+};
+
+// helpers
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
 };
 
 var ViewModel = function() { 

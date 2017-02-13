@@ -10,23 +10,26 @@
     </a>
   </div>
 
-<div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
-
-      <span>List of Attractions:</span>
-      <form>
-        <input type="text">
-        <button>Search</button>
-      </form>
-      <ul data-bind="foreach: attractions">
-        <li>
-          <span data-bind="text: name"> </span>
-        </li>
-      </ul>
-
-</div>
+  <div class="map_wrapper">
     
+    <div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
 
+          <span>List of Attractions:</span>
+          <form>
+            <input type="text">
+            <button>Search</button>
+          </form>
+          <ul data-bind="foreach: attractions">
+            <li>
+              <span data-bind="text: name"> </span>
+            </li>
+          </ul>
+
+    </div>
+      
     <div class="map" id="js_map"></div>
+  
+  </div>
 
 
 {% include "partials/footer.njk" %}

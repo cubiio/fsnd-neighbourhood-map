@@ -61,16 +61,22 @@ function initMap() {
 
 // Constructor 
 var Location = function(data) {
+    var self = this;
     this.name = data.name;
     this.marker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
         position: data.position,
     });
+    this.infowindow = new google.maps.InfoWindow({
+        content: data.name,
+        maxWidth: 200
+    });
     this.marker.addListener('click', function() {
-        console.log('marker clicked!');
-        console.log(this);
+        // console.log('marker clicked!');
+        // console.log(this);
         toggleBounce(this);
+        self.infowindow.open(map, self.marker);
     });
 };
 

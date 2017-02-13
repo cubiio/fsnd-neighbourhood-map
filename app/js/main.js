@@ -66,13 +66,11 @@ var Location = function(data) {
         map: map,
         animation: google.maps.Animation.DROP,
         position: data.position,
-        // addListener('click', toggleBounce),
     });
-    // this.marker.addListener('click', toggleBounce);
     this.marker.addListener('click', function() {
         console.log('marker clicked!');
-        toggleBounce(this.marker);
-        // toggleBounce.call(this.marker);
+        console.log(this);
+        toggleBounce(this);
     });
 };
 
@@ -82,6 +80,9 @@ function toggleBounce(marker) {
         marker.setAnimation(null);
     } else {
         marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function() {
+            marker.setAnimation(null);
+        }, 2100);  // 3 bounces then stops
     }
 };
 

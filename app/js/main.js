@@ -72,17 +72,17 @@ var Location = function(data) {
     this.marker.addListener('click', function() {
         console.log('marker clicked!');
         toggleBounce(this.marker);
-        // toggleBounce.apply(marker);
+        // toggleBounce.call(this.marker);
     });
 };
 
 // helpers
 function toggleBounce(marker) {
-  if (marker.getAnimation() !== null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  }
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
 };
 
 var ViewModel = function() { 
@@ -98,6 +98,20 @@ var ViewModel = function() {
         self.attractions.push(new Location(locationItem));
     });
     console.log(this.attractions());
+
+
+    /////////////////////////
+    // responsive menu / list
+
+    // Used to toggle CSS class '.open' - false means '.open'
+    // is not applied to the nav element. 
+    this.toggleDrawer = ko.observable(false);
+
+    // Sets CSS class '.open' to true if false and vice versa.
+    this.openDrawer = function() {
+        console.log("hamburgers!")
+        self.toggleDrawer( !self.toggleDrawer() );
+    };
 
 };
 

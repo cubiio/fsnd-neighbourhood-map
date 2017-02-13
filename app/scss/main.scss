@@ -109,13 +109,54 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-#js_map {
-  height: 100%;
-  width: 100%;
+@media screen and (max-width: 650px) {
+
+  .header {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .header_menu {
+    display: flex;
+    align-self: center;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    padding: 1em;
+  }
+
+  .list_menu {
+    z-index: 10;
+    background-color: #fff;
+    width: 300px;
+    position: absolute;
+    /* This transform moves the drawer off canvas. */
+    -webkit-transform: translate(-550px, 0);
+    transform: translate(-550px, 0);
+    /* Optionally, we animate the drawer. */
+    transition: transform 0.3s ease;
+  }
+
+  .list_menu.open {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+  }
+}
+
+@media screen and (min-width: 651px) {
+  .header_menu {
+    display: none;
+  }
 }
 
 
-
+.map {
+  height: 100%;
+  width: 100%;
+}
 
 /* ==========================================================================
    Helper classes

@@ -6,6 +6,19 @@
 
     <div id="js_map"></div>
 
+    <div>
+      <span>List of Attractions:</span>
+      <form>
+        <input type="text">
+        <button>Search</button>
+      </form>
+      <ul data-bind="foreach: attractions">
+        <li>
+          <span data-bind="text: name"> </span>
+        </li>
+      </ul>
+    </div>
+
 {% include "partials/footer.njk" %}
 
 {% endblock content %}

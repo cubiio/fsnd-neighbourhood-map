@@ -70,6 +70,7 @@ function initMap() {
 // Constructor 
 var Location = function(data) {
     var self = this;
+    
     this.name = data.name;
     this.venueID = data.venueID;
     this.marker = new google.maps.Marker({
@@ -90,12 +91,11 @@ var Location = function(data) {
         // console.log('marker clicked!');
         // console.log(this);
         toggleBounce(this);
-        // getVenueInfo();  // move this outside of the constructor
         self.infowindow.open(map, self.marker);
     });
 };
 
-// helpers
+// helper function(s)
 
 // config for location marker animation
 function toggleBounce(marker) {
@@ -109,43 +109,41 @@ function toggleBounce(marker) {
     }
 }
 
-// ajax call to FourSquare API
-function getVenueInfo() {
-    var fsqVenueID = '4ade0ccef964a520246921e3';  // TODO: change to Model.venueID
-    var fsqClientID = '?client_id=IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
-    var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
-    var vParam = '&v=20170215';  // TODO: YYYYMMDDchange to a date
-    var mParam = '&m=foursquare';
-    var fourSquareURL = 'https://api.foursquare.com/v2/venues/' + fsqVenueID + fsqClientID + fsqClientSecret + vParam + mParam;
-    var fsqRequestTimeout = setTimeout(function(){
-        console.log("Failed to get FourSquare info");
-    }, 8000);
-
-    $.ajax({
-        url: fourSquareURL,
-        data: {
-
-        },
-        dataType: "jsonp",
-        success: function (venueInfo) {
-            console.log('marker clicked and successfully called ajax func');
-            console.log(venueInfo);
-            clearTimeout(fsqRequestTimeout);
-        }
-    });
-}
-
+// ViewModel START
 var ViewModel = function() { 
     console.log('ViewModel invoked');
 
     var self = this;
 
+    // config for FourSquare ajax request
+    var fsqClientID = '?client_id=IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
+    var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
+    var vParam = '&v=20170215';
+    var mParam = '&m=foursquare';
+    var fsqRequestTimeout = setTimeout(function(){
+        console.log("Failed to get FourSquare info");
+    }, 8000);
+
     // observable array for all 'attractions' i.e. items in locations object literal
     this.attractions = ko.observableArray();
 
-    // Push each locationItem via the Constructor, this creates the markers
+    // Create each locationItem using the 'Location' Constructor
     locations.forEach(function(locationItem) {
         self.attractions.push(new Location(locationItem));
+
+        // FourSquare ajax request for venue info
+        $.ajax({
+            url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClientID + fsqClientSecret + vParam + mParam,
+            data: {
+
+            },
+            dataType: "jsonp",
+            success: function (venueInfo) {
+                console.log('successfully called foursquare ajax func');
+                console.log(venueInfo);
+                clearTimeout(fsqRequestTimeout);
+            }
+        });
     });
     // console.log(this.attractions());
 

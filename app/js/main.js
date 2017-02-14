@@ -4,7 +4,7 @@
 // use strict
 'use strict';
 
-// Model:
+// Model START
 var locations = [
     {   
         name: "Olympia Stadium",
@@ -47,11 +47,13 @@ var locations = [
         venueID: '4ade0ca0f964a5202c6821e3'
     }
 ];
+// Model END
+
 
 // global var for initMap()
 var map;
 
-// Async callback loads Google Map
+// Async callback to Google Maps API
 function initMap() {
     console.log('initMap invoked');
     var munich = { 
@@ -67,32 +69,14 @@ function initMap() {
     });
 }
 
-// Constructor 
+// Constructor for each location i.e. venue displayed on the map
 var Location = function(data) {
-    var self = this;
-    
-    this.name = data.name;
-    this.venueID = data.venueID;
-    this.marker = new google.maps.Marker({
-        map: map,
-        animation: google.maps.Animation.DROP,
-        position: data.position,
-    });
-    this.contentString = '<div class="infowindow">' +
-        '<h2>' + data.name + '</h2>' +
-        '<p>Placeholder summary info</p>' +
-        '</div>';
-
-    this.infowindow = new google.maps.InfoWindow({
-        content: self.contentString,
-        maxWidth: 200
-    });
-    this.marker.addListener('click', function() {
-        // console.log('marker clicked!');
-        // console.log(this);
-        toggleBounce(this);
-        self.infowindow.open(map, self.marker);
-    });
+    this.name = ko.observable(data.name);
+    this.position = ko.observable(data.position);
+    this.venueID = ko.observable(data.venueID);
+    this.marker = ko.observable('');
+    this.infowindow = ko.observable('');
+    this.venueCanonicalURL = ko.observable('');
 };
 
 // helper function(s)
@@ -127,24 +111,58 @@ var ViewModel = function() {
     // observable array for all 'attractions' i.e. items in locations object literal
     this.attractions = ko.observableArray();
 
-    // Create each locationItem using the 'Location' Constructor
+    // Instantiate objects using the 'Location' Constructor i.e. 
+    // creates each locationItem using the 'Location' Constructor
     locations.forEach(function(locationItem) {
+        
+        // creates an array with each 'locationItem'
         self.attractions.push(new Location(locationItem));
+
+        // creates a location marker
+        locationItem.marker = new google.maps.Marker({
+            map: map,
+            animation: google.maps.Animation.DROP,
+            position: locationItem.position,
+        });
 
         // FourSquare ajax request for venue info
         $.ajax({
             url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClientID + fsqClientSecret + vParam + mParam,
             data: {
-
+                // insert data requirements here
             },
             dataType: "jsonp",
             success: function (venueInfo) {
                 console.log('successfully called foursquare ajax func');
                 console.log(venueInfo);
+                // add response data so available in Location constructor
                 clearTimeout(fsqRequestTimeout);
             }
         });
+
+        // content for the infowindow
+        locationItem.contentString = '<div class="infowindow">' +
+            '<h2>' + locationItem.name + '</h2>' +
+            '<p>More venue <a href="#">info</a></p>' +
+            '<p>Placeholder summary info</p>' +
+            '<p>Information powered by Foursquare</p>' +
+            '</div>';
+
+        // config for the infowindow
+        locationItem.infowindow = new google.maps.InfoWindow({
+            content: locationItem.contentString,
+            maxWidth: 200
+        });
+
+        // listens for clicks on the marker and then executes... 
+        locationItem.marker.addListener('click', function() {
+            console.log('marker clicked!');
+            console.log(this);
+            toggleBounce(this);
+            locationItem.infowindow.open(map, locationItem.marker);
+        });
     });
+
     // console.log(this.attractions());
 
     // Used to toggle CSS class '.open' - false means '.open'

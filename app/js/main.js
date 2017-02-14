@@ -8,35 +8,43 @@
 var locations = [
     {   
         name: "Olympia Stadium",
-        position: {lat: 48.1731628, lng: 11.5444149}
+        position: {lat: 48.1731628, lng: 11.5444149},
+        venueID: '4ade0d2bf964a520286b21e3'
     },
     {
         name: "Deutsches Museum",
-        position: {lat: 48.1298317, lng: 11.583414}
+        position: {lat: 48.1298317, lng: 11.583414},
+        venueID: '4ade0cd7f964a520596921e3'
     },
     {
         name: "Marienplatz",
-        position: {lat: 48.1373968, lng:11.5753117}
+        position: {lat: 48.1373968, lng:11.5753117},
+        venueID: '4ade0ccef964a520246921e3'
     },
     {
         name: "Frauenkirche",
-        position: {lat: 48.1386346, lng: 11.5734886}
+        position: {lat: 48.1386346, lng: 11.5734886},
+        venueID: '51fdf87c498e22659ee3cf52'
     },
     {
         name: "Viktualienmarkt",
-        position: {lat: 48.1351179, lng: 11.5761181}
+        position: {lat: 48.1351179, lng: 11.5761181},
+        venueID: '4ade0d12f964a5209c6a21e3'
     },
     {
         name: "Residenz",
-        position: {lat: 48.1418014, lng: 11.5793492}
+        position: {lat: 48.1418014, lng: 11.5793492},
+        venueID: '4bbd0f9a593fef3b03040356'
     },
     {
         name: "Englischer Garten",
-        position: {lat: 48.1642359, lng: 11.6054154}
+        position: {lat: 48.1642359, lng: 11.6054154},
+        venueID: '4ade0cc6f964a520f86821e3'
     },
     {
         name: "Hofbräuhaus München",
-        position: {lat: 48.1376134, lng: 11.5797885}
+        position: {lat: 48.1376134, lng: 11.5797885},
+        venueID: '4ade0ca0f964a5202c6821e3'
     }
 ];
 

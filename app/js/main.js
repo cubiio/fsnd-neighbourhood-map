@@ -71,20 +71,26 @@ function initMap() {
 var Location = function(data) {
     var self = this;
     this.name = data.name;
+    this.venueID = data.venueID;
     this.marker = new google.maps.Marker({
         map: map,
         animation: google.maps.Animation.DROP,
         position: data.position,
     });
+    this.contentString = '<div class="infowindow">' +
+        '<h2>' + data.name + '</h2>' +
+        '<p>Placeholder summary info</p>' +
+        '</div>';
+
     this.infowindow = new google.maps.InfoWindow({
-        content: data.name,
+        content: self.contentString,
         maxWidth: 200
     });
     this.marker.addListener('click', function() {
         // console.log('marker clicked!');
         // console.log(this);
         toggleBounce(this);
-        getVenueInfo();
+        // getVenueInfo();  // move this outside of the constructor
         self.infowindow.open(map, self.marker);
     });
 };

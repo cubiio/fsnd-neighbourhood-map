@@ -76,7 +76,6 @@ var Location = function(data) {
     this.venueID = ko.observable(data.venueID);
     this.marker = ko.observable('');
     this.infowindow = ko.observable('');
-    this.venueCanonicalURL = ko.observable('');
 };
 
 // helper function(s)
@@ -133,31 +132,51 @@ var ViewModel = function() {
             },
             dataType: "jsonp",
             success: function (venueInfo) {
-                console.log('successfully called foursquare ajax func');
+                // console.log('successfully called foursquare ajax func');
                 console.log(venueInfo);
-                // add response data so available in Location constructor
+
+                // pass ajax response to this helper function to build the infowindow
+                buildInfoWindow(venueInfo);
+
                 clearTimeout(fsqRequestTimeout);
             }
         });
 
+        // function buildInfoWindow(venueInfo) {
+        this.buildInfoWindow = function(venueInfo) {
+            // TODO error handling, if statement to check code == 200
+            var contentString = '<div class="infowindow">' +
+                                // '<h2>' + this.locationItem.name + '</h2>' +
+                                '<p>More venue <a href="#">info</a></p>' +
+                                '<p>' + venueInfo.response.venue.canonicalUrl + '</p>' +
+                                '<p>Placeholder summary info</p>' +
+                                '<p>Information powered by Foursquare</p>' +
+                                '</div>';
+            return contentString;
+        }
+        console.log('attempting to log contentString to console')
+        console.log(contentString);
+
         // content for the infowindow
-        locationItem.contentString = '<div class="infowindow">' +
-            '<h2>' + locationItem.name + '</h2>' +
-            '<p>More venue <a href="#">info</a></p>' +
-            '<p>Placeholder summary info</p>' +
-            '<p>Information powered by Foursquare</p>' +
-            '</div>';
+        // locationItem.contentString = '<div class="infowindow">' +
+        //     '<h2>' + locationItem.name + '</h2>' +
+        //     '<p>More venue <a href="#">info</a></p>' +
+        //     '<p>' + locationItem.venueFoursquareURL + '</p>' +
+        //     '<p>Placeholder summary info</p>' +
+        //     '<p>Information powered by Foursquare</p>' +
+        //     '</div>';
 
         // config for the infowindow
         locationItem.infowindow = new google.maps.InfoWindow({
-            content: locationItem.contentString,
+            // content: locationItem.contentString,
+            content: self.buildInfoWindow(),
             maxWidth: 200
         });
 
         // listens for clicks on the marker and then executes... 
         locationItem.marker.addListener('click', function() {
             console.log('marker clicked!');
-            console.log(this);
+            // console.log(this);
             toggleBounce(this);
             locationItem.infowindow.open(map, locationItem.marker);
         });

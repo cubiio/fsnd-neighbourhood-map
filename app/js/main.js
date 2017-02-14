@@ -1,5 +1,5 @@
 /* jshint undef: true, unused: true */
-/* globals ko, google */
+/* globals ko, google, $ */
 
 // use strict
 'use strict';
@@ -76,11 +76,14 @@ var Location = function(data) {
         // console.log('marker clicked!');
         // console.log(this);
         toggleBounce(this);
+        getVenueInfo();
         self.infowindow.open(map, self.marker);
     });
 };
 
 // helpers
+
+// config for location marker animation
 function toggleBounce(marker) {
     if (marker.getAnimation() !== null) {
         marker.setAnimation(null);
@@ -90,6 +93,32 @@ function toggleBounce(marker) {
             marker.setAnimation(null);
         }, 2100);  // 3 bounces then stops
     }
+}
+
+// ajax call to FourSquare API
+function getVenueInfo() {
+    var fsqVenueID = '4ade0ccef964a520246921e3';  // TODO: change to Model.venueID
+    var fsqClientID = '?client_id=IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
+    var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
+    var vParam = '&v=20170215';  // TODO: YYYYMMDDchange to a date
+    var mParam = '&m=foursquare';
+    var fourSquareURL = 'https://api.foursquare.com/v2/venues/' + fsqVenueID + fsqClientID + fsqClientSecret + vParam + mParam;
+    var fsqRequestTimeout = setTimeout(function(){
+        console.log("Failed to get FourSquare info");
+    }, 8000);
+
+    $.ajax({
+        url: fourSquareURL,
+        data: {
+
+        },
+        dataType: "jsonp",
+        success: function (venueInfo) {
+            console.log('marker clicked and successfully called ajax func');
+            console.log(venueInfo);
+            clearTimeout(fsqRequestTimeout);
+        }
+    });
 }
 
 var ViewModel = function() { 
@@ -104,19 +133,15 @@ var ViewModel = function() {
     locations.forEach(function(locationItem) {
         self.attractions.push(new Location(locationItem));
     });
-    console.log(this.attractions());
-
-
-    /////////////////////////
-    // responsive menu / list
+    // console.log(this.attractions());
 
     // Used to toggle CSS class '.open' - false means '.open'
-    // is not applied to the nav element. 
+    // is not applied to the menu element. 
     this.toggleDrawer = ko.observable(false);
 
     // Sets CSS class '.open' to true if false and vice versa.
     this.openDrawer = function() {
-        console.log("hamburgers!");
+        // console.log("hamburgers!");
         self.toggleDrawer( !self.toggleDrawer() );
     };
 

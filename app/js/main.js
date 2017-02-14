@@ -22,9 +22,9 @@ var locations = [
         venueID: '4ade0ccef964a520246921e3'
     },
     {
-        name: "Frauenkirche",
-        position: {lat: 48.1386346, lng: 11.5734886},
-        venueID: '51fdf87c498e22659ee3cf52'
+        name: "Weißes Bräuhaus",
+        position: {lat: 48.1364643, lng: 11.578219},
+        venueID: '4b44c33ef964a52078fb25e3'
     },
     {
         name: "Viktualienmarkt",
@@ -99,7 +99,8 @@ var ViewModel = function() {
     var self = this;
 
     // config for FourSquare ajax request
-    var fsqClientID = '?client_id=IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
+    var fsqClient = '?client_id=';
+    var fsqClientID = 'IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
     var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
@@ -126,22 +127,31 @@ var ViewModel = function() {
 
         // FourSquare ajax request for venue info
         $.ajax({
-            url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClientID + fsqClientSecret + vParam + mParam,
+            url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
             data: {
                 // insert data requirements here
             },
             dataType: "jsonp",
-            success: function (venueInfo) {
+            success: function (data) {
                 // console.log('successfully called foursquare ajax func');
-                console.log(venueInfo);
+                console.log(data);
                 clearTimeout(fsqRequestTimeout);
+
+                // shortener
+                var venueInfo = data.response.venue;
 
                 // content for the infowindow
                 locationItem.contentString = '<div class="infowindow">' +
                     '<h2>' + locationItem.name + '</h2>' +
-                    '<p>More venue <a href="' + venueInfo.response.venue.canonicalUrl + '" target="_blank">info</a></p>' +
-                    // '<p>' + venueInfo.response.venue.canonicalUrl + '</p>' +
-                    '<p>Placeholder summary info</p>' +
+                    // '<p>Description: ' + venueInfo.description + '</p>' +
+                    // '<p>Opening hours: ' + venueInfo.hours.timeframes[0].days + '</p>' +
+                    // '<p>Opening status: ' + venueInfo.hours.status + '</p>' +
+                    // '<p>Location: ' + venueInfo.location.formattedAddress + '</p>' +
+                    // '<p>Rating: ' + venueInfo.rating + ' / 10 </p>' +
+                    // '<p>Price €: ' + venueInfo.price.message + '</p>' +
+                    '<p>Best Tip: ' + venueInfo.tips.groups[0].items[0].text + '</p>' +
+                    '<p>Placeholder:</p>' +
+                    '<p>More venue <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">info</a></p>' +
                     '<p>Information powered by Foursquare</p>' +
                     '</div>';
 
@@ -149,7 +159,7 @@ var ViewModel = function() {
                 locationItem.infowindow = new google.maps.InfoWindow({
                     content: locationItem.contentString,
                     // content: self.buildInfoWindow(),
-                    maxWidth: 200
+                    maxWidth: 300
                 });
             }
         });

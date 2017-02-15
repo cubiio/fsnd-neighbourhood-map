@@ -146,6 +146,13 @@ var ViewModel = function() {
                 // helpers: shortener and confirm valid json responses
                 var venueInfo = data.response.venue;
 
+                var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
+                if (description != "") {
+                    description = venueInfo.description;
+                } else {
+                    description = "";
+                }
+
                 var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
                 if (openStatus !=  "") {
                   openStatus = venueInfo.hours.status;
@@ -157,14 +164,14 @@ var ViewModel = function() {
                 if (address != "") {
                     address = venueInfo.location.formattedAddress;
                 } else {
-                    address = "Foursquare has not info at present";
+                    address = "Foursquare has no info at present";
                 }
 
                 var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
                 if (rating != "") {
                     rating = venueInfo.rating + ' / 10';
                 } else {
-                    rating = "n/a"
+                    rating = "n/a";
                 }
 
                 var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
@@ -174,17 +181,10 @@ var ViewModel = function() {
                     tips = "No tip available at present";
                 }
 
-                // var fsqUrl = venueInfo.hasOwnProperty("canonicalUrl") ? venueInfo.canonicalUrl : "";
-                // if (fsqUrl != "") {
-                //     fsqUrl = venueInfo.canonicalUrl;
-                // } else {
-                //     fsqUrl = ""
-                // }
-
                 // content for the infowindow
                 locationItem.contentString = '<div class="infowindow">' +
                     '<h2>' + locationItem.name + '</h2>' +
-                    // '<p>Description: ' + locationItem.description + '</p>' +
+                    '<p>' + description + '</p>' +
                     '<p>Opening hours: ' + openStatus + '</p>' +
                     '<p>Location: ' + address + '</p>' +
                     '<p>Rating: ' + rating + '</p>' +
@@ -196,7 +196,6 @@ var ViewModel = function() {
                 // config for the infowindow
                 locationItem.infowindow = new google.maps.InfoWindow({
                     content: locationItem.contentString,
-                    // content: self.buildInfoWindow(),
                     maxWidth: 300
                 });
             }  //, 

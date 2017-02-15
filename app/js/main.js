@@ -45,7 +45,13 @@ var locations = [
         name: "Hofbräuhaus München",
         position: {lat: 48.1376134, lng: 11.5797885},
         venueID: '4ade0ca0f964a5202c6821e3'
+    },
+    {
+        name: "Frauenkirche",
+        position: {lat: 48.1386346, lng: 11.5734886},
+        venueID: '51fdf87c498e22659ee3cf52'
     }
+
 ];
 // Model END
 
@@ -131,26 +137,58 @@ var ViewModel = function() {
             data: {
                 // insert data requirements here
             },
-            dataType: "jsonp",
+            dataType: "json",
             success: function (data) {
                 // console.log('successfully called foursquare ajax func');
                 console.log(data);
                 clearTimeout(fsqRequestTimeout);
 
-                // shortener
+                // helpers: shortener and confirm valid json responses
                 var venueInfo = data.response.venue;
+
+                var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
+                if (openStatus !=  "") {
+                  openStatus = venueInfo.hours.status;
+                } else {
+                  openStatus = "Foursquare has no info at present";
+                }
+
+                var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
+                if (address != "") {
+                    address = venueInfo.location.formattedAddress;
+                } else {
+                    address = "Foursquare has not info at present";
+                }
+
+                var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
+                if (rating != "") {
+                    rating = venueInfo.rating + ' / 10';
+                } else {
+                    rating = "n/a"
+                }
+
+                var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
+                if (tips != "") {
+                    tips = venueInfo.tips.groups[0].items[0].text;
+                } else {
+                    tips = "No tip available at present";
+                }
+
+                // var fsqUrl = venueInfo.hasOwnProperty("canonicalUrl") ? venueInfo.canonicalUrl : "";
+                // if (fsqUrl != "") {
+                //     fsqUrl = venueInfo.canonicalUrl;
+                // } else {
+                //     fsqUrl = ""
+                // }
 
                 // content for the infowindow
                 locationItem.contentString = '<div class="infowindow">' +
                     '<h2>' + locationItem.name + '</h2>' +
-                    // '<p>Description: ' + venueInfo.description + '</p>' +
-                    // '<p>Opening hours: ' + venueInfo.hours.timeframes[0].days + '</p>' +
-                    // '<p>Opening status: ' + venueInfo.hours.status + '</p>' +
-                    // '<p>Location: ' + venueInfo.location.formattedAddress + '</p>' +
-                    // '<p>Rating: ' + venueInfo.rating + ' / 10 </p>' +
-                    // '<p>Price €: ' + venueInfo.price.message + '</p>' +
-                    '<p>Best Tip: ' + venueInfo.tips.groups[0].items[0].text + '</p>' +
-                    '<p>Placeholder:</p>' +
+                    // '<p>Description: ' + locationItem.description + '</p>' +
+                    '<p>Opening hours: ' + openStatus + '</p>' +
+                    '<p>Location: ' + address + '</p>' +
+                    '<p>Rating: ' + rating + '</p>' +
+                    '<p>Best Tip: ' + tips + '</p>' +
                     '<p>More venue <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">info</a></p>' +
                     '<p>Information powered by Foursquare</p>' +
                     '</div>';
@@ -161,7 +199,8 @@ var ViewModel = function() {
                     // content: self.buildInfoWindow(),
                     maxWidth: 300
                 });
-            }
+            }  //, 
+            // error: // TODO add error handling for ajax request
         });
 
         // listens for clicks on the marker and then executes... 

@@ -45,11 +45,6 @@ var locations = [
         name: "Hofbräuhaus München",
         position: {lat: 48.1376134, lng: 11.5797885},
         venueID: '4ade0ca0f964a5202c6821e3'
-    },
-    {
-        name: "Frauenkirche",
-        position: {lat: 48.1386346, lng: 11.5734886},
-        venueID: '51fdf87c498e22659ee3cf52'
     }
 
 ];
@@ -80,8 +75,8 @@ var Location = function(data) {
     this.name = ko.observable(data.name);
     this.position = ko.observable(data.position);
     this.venueID = ko.observable(data.venueID);
-    this.marker = ko.observable('');
-    this.infowindow = ko.observable('');
+    // this.marker = ko.observable('');
+    // this.infowindow = ko.observable('');
 };
 
 // helper function(s)
@@ -99,7 +94,7 @@ function toggleBounce(marker) {
 }
 
 // ViewModel START
-var ViewModel = function() { 
+var ViewModel = function() {
     console.log('ViewModel invoked');
 
     var self = this;
@@ -112,6 +107,8 @@ var ViewModel = function() {
     var mParam = '&m=foursquare';
     var fsqRequestTimeout = setTimeout(function(){
         console.log("Failed to get FourSquare info");
+        document.getElementById('js_foursquareError').innerHTML += 'Failed to get ' + 
+        'venue information from Foursquare. Please check your internet connection, or try again later.';
     }, 8000);
 
     // observable array for all 'attractions' i.e. items in locations object literal
@@ -134,9 +131,6 @@ var ViewModel = function() {
         // FourSquare ajax request for venue info
         $.ajax({
             url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
-            data: {
-                // insert data requirements here
-            },
             dataType: "json",
             success: function (data) {
                 // console.log('successfully called foursquare ajax func');
@@ -181,7 +175,7 @@ var ViewModel = function() {
                     tips = "No tip available at present";
                 }
 
-                // content for the infowindow
+                // content for the infowindow if API callback is successful
                 locationItem.contentString = '<div class="infowindow">' +
                     '<h2>' + locationItem.name + '</h2>' +
                     '<p>' + description + '</p>' +
@@ -189,17 +183,16 @@ var ViewModel = function() {
                     '<p>Location: ' + address + '</p>' +
                     '<p>Rating: ' + rating + '</p>' +
                     '<p>Best Tip: ' + tips + '</p>' +
-                    '<p>More venue <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">info</a></p>' +
+                    '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
                     '<p>Information powered by Foursquare</p>' +
                     '</div>';
 
-                // config for the infowindow
+                // config for infowindow if success
                 locationItem.infowindow = new google.maps.InfoWindow({
                     content: locationItem.contentString,
                     maxWidth: 300
                 });
-            }  //, 
-            // error: // TODO add error handling for ajax request
+            }
         });
 
         // listens for clicks on the marker and then executes... 

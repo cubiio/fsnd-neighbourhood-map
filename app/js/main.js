@@ -93,6 +93,13 @@ function toggleBounce(marker) {
     }
 }
 
+// alerts the user if Google Maps fails to load
+function googleError() {
+    // console.log('googleError invoked')
+    alert('Google Maps has failed to load. Please check your internet connection or try again later.')
+}
+
+
 // ViewModel START
 var ViewModel = function() {
     console.log('ViewModel invoked');
@@ -106,7 +113,7 @@ var ViewModel = function() {
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
     var fsqRequestTimeout = setTimeout(function(){
-        console.log("Failed to get FourSquare info");
+        // console.log("Failed to get FourSquare info");
         document.getElementById('js_foursquareError').innerHTML += 'Failed to get ' + 
         'venue information from Foursquare. Please check your internet connection, or try again later.';
     }, 8000);
@@ -217,12 +224,9 @@ var ViewModel = function() {
 
 };
 
-
 // Maps API callback is to initApp
 // This function controls execution of the app
 var initApp = function() {
     initMap();
     ko.applyBindings(new ViewModel());
-    // vm = new ViewModel();
-    // ko.applyBindings(vm);
 };

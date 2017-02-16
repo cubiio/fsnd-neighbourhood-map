@@ -50,6 +50,21 @@ var locations = [
         name: 'Der Pschorr',
         position: {lat: 48.1347421, lng: 11.5750694},
         venueID: '4b335a36f964a520d51825e3'
+    },
+    {
+        name: 'BMW Museum',
+        position: {lat: 48.1767861, lng: 11.5591494},
+        venueID: '4ade0cdaf964a520666921e3'
+    },
+    {
+        name: 'SEA LIFE München',
+        position: {lat: 48.1737757, lng: 11.5561206},
+        venueID: '4ade0cd6f964a520536921e3'
+    },
+    {
+        name: 'Chinese Tower',
+        position: {lat: 48.1525646, lng: 11.5919791},
+        venueID: '54fafbcd498e724a96bbded2'
     }
 ];
 // Model END

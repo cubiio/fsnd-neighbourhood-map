@@ -98,6 +98,7 @@ var Location = function(data) {
     this.position = data.position;
     this.venueID = data.venueID;
     this.marker = null;
+    this.favourite = false;
 };
 
 // helper function(s)
@@ -206,15 +207,25 @@ var ViewModel = function() {
 
                 // content for the infowindow if API callback is successful
                 locationItem.contentString = '<div class="infowindow">' +
-                    '<h2>' + locationItem.name + '</h2>' +
-                    '<p>' + description + '</p>' +
-                    '<p>Opening hours: ' + openStatus + '</p>' +
-                    '<p>Location: ' + address + '</p>' +
-                    '<p>Rating: ' + rating + '</p>' +
-                    '<p>Best Tip: ' + tips + '</p>' +
-                    '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                    '<p>Information powered by Foursquare</p>' +
-                    '</div>';
+                    '<div class="info_wrapper">' +
+                        '<h2>' + locationItem.name + '</h2>' +
+                        '<p>' + description + '</p>' +
+                        '<p>Opening hours: ' + openStatus + '</p>' +
+                        '<p>Location: ' + address + '</p>' +
+                        '<p>Rating: ' + rating + '</p>' +
+                        '<p>Best Tip: ' + tips + '</p>' +
+                        '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
+                        '<p>Information powered by Foursquare</p>' +
+                    '</div>' +  // end info_wrapper
+
+                    // '<div class="fav_wrapper">' +
+                    // '<p class="fav_text" >Click to add to favourites</p>' +
+                    //     '<div class="fav">' +
+                    //     '<i data-bind="click: favouriteAttractions" class="fa fa-star" aria-hidden="true"></i>' +
+                    //     '</div>' +
+                    // '</div>' + // end fav_wrapper
+                    
+                    '</div>'; // end infowindow div class
 
                 // config for infowindow if success
                 locationItem.infowindow = new google.maps.InfoWindow({
@@ -231,6 +242,11 @@ var ViewModel = function() {
             toggleBounce(this);
             locationItem.infowindow.open(map, locationItem.marker);
         });
+
+        locationItem.marker.addListener('rightclick', function() {
+            // console.log('right click on marker ' + locationItem.name);
+            self.favouriteAttractions(locationItem);
+        })
 
     });
 
@@ -287,6 +303,12 @@ var ViewModel = function() {
         // console.log("hamburgers!");
         self.toggleDrawer( !self.toggleDrawer() );
     };
+
+    // manage favourites
+
+    self.favouriteAttractions = function(locationItem) {
+        console.log('You want to favourite ' + locationItem.name);
+    }
 
 };
 // ViewModel END

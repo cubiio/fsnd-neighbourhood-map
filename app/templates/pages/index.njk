@@ -25,18 +25,15 @@
           </ul>
 
           <span>Favourites:</span>
-
+          <p>Right click to add</p>
+          <ul <input data-bind="foreach: favAttractions">
+            <li>
+              <span data-bind="text: name"> </span>
+            </li>
+          </ul>
     </div>
       
     <div class="map" id="js_map"></div>
-  
-  <div class="fav">
-    <i data-bind="click: favouriteAttractions" class="fa fa-star" aria-hidden="true"></i>
-  </div>
-
-  <div class="fav_venue">
-    <i class="fa fa-star" aria-hidden="true"></i>
-  </div>
 
   </div>
 

@@ -306,9 +306,34 @@ var ViewModel = function() {
 
     // manage favourites
 
-    self.favouriteAttractions = function(locationItem) {
+    // set-up empty observable array for favourite attractions
+    self.favAttractions = ko.observableArray();
+
+    // this.favourite = ko.observable(false);
+
+    this.favouriteAttractions = function(locationItem) {
         console.log('You want to favourite ' + locationItem.name);
-    }
+
+        self.favAttractions.removeAll();
+
+        // toggle favourite from truthy to falsy, or vice versa
+        // locationItem.favourite( !locationItem.favourite );
+        if (locationItem.favourite == false) {
+            locationItem.favourite = true;
+        } else {
+            locationItem.favourite = false;
+        }
+
+        // add to observable array if favourite is truthy
+        self.attractions.forEach(function(locationItem) {
+
+            if(locationItem.favourite == true) {
+                self.favAttractions.push(locationItem);
+            }
+            // console.log('fav Attractions are below');
+            // console.log(self.favAttractions());
+        });
+    };
 
 };
 // ViewModel END

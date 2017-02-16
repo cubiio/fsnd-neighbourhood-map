@@ -7,46 +7,50 @@
 // Model START
 var locations = [
     {   
-        name: "Olympia Stadium",
+        name: 'Olympia Stadium',
         position: {lat: 48.1731628, lng: 11.5444149},
         venueID: '4ade0d2bf964a520286b21e3'
     },
     {
-        name: "Deutsches Museum",
+        name: 'Deutsches Museum',
         position: {lat: 48.1298317, lng: 11.583414},
         venueID: '4ade0cd7f964a520596921e3'
     },
     {
-        name: "Marienplatz",
+        name: 'Marienplatz',
         position: {lat: 48.1373968, lng:11.5753117},
         venueID: '4ade0ccef964a520246921e3'
     },
     {
-        name: "Weißes Bräuhaus",
+        name: 'Weißes Bräuhaus',
         position: {lat: 48.1364643, lng: 11.578219},
         venueID: '4b44c33ef964a52078fb25e3'
     },
     {
-        name: "Viktualienmarkt",
+        name: 'Viktualienmarkt',
         position: {lat: 48.1351179, lng: 11.5761181},
         venueID: '4ade0d12f964a5209c6a21e3'
     },
     {
-        name: "Residenz",
+        name: 'Residenz',
         position: {lat: 48.1418014, lng: 11.5793492},
         venueID: '4bbd0f9a593fef3b03040356'
     },
     {
-        name: "Englischer Garten",
+        name: 'Englischer Garten',
         position: {lat: 48.1642359, lng: 11.6054154},
         venueID: '4ade0cc6f964a520f86821e3'
     },
     {
-        name: "Hofbräuhaus München",
+        name: 'Hofbräuhaus München',
         position: {lat: 48.1376134, lng: 11.5797885},
         venueID: '4ade0ca0f964a5202c6821e3'
+    },
+    {
+        name: 'Der Pschorr',
+        position: {lat: 48.1347421, lng: 11.5750694},
+        venueID: '4b335a36f964a520d51825e3'
     }
-
 ];
 // Model END
 
@@ -234,6 +238,8 @@ var ViewModel = function() {
     // set user filter as ko observable
     self.userFilter = ko.observable('');
 
+    // filter function: updates observableArray and 
+    // sets visibility of location markers
     self.runAttractionFilter = function() {
         var searchFilter = self.userFilter().toLowerCase();
 
@@ -243,6 +249,7 @@ var ViewModel = function() {
         // 2. run the filter and only add to the array if a match
         self.attractions.forEach(function(locationItem) {
 
+            // set marker to false i.e. invisible
             locationItem.marker.setVisible(false);
 
             if(locationItem.name.toLowerCase().indexOf(searchFilter) !== -1) {
@@ -250,6 +257,7 @@ var ViewModel = function() {
             }
         });
 
+        // for each item in the array, set visibility to true i.e. visible
         self.filteredAttractions().forEach(function(locationItem) {
             locationItem.marker.setVisible(true);
         });
@@ -265,7 +273,9 @@ var ViewModel = function() {
         self.toggleDrawer( !self.toggleDrawer() );
     };
 
-// };
+};
+// ViewModel END
+
 
 // Maps API callback is to initApp
 // This function controls execution of the app

@@ -78,6 +78,7 @@ var Location = function(data) {
     this.name = data.name;
     this.position = data.position;
     this.venueID = data.venueID;
+    this.marker = null;
 };
 
 // helper function(s)
@@ -97,7 +98,7 @@ function toggleBounce(marker) {
 // alerts the user if Google Maps fails to load
 function googleError() {
     // console.log('googleError invoked')
-    alert('Google Maps has failed to load. Please check your internet connection or try again later.')
+    alert('Google Maps has failed to load. Please check your internet connection or try again later.');
 }
 
 
@@ -119,100 +120,99 @@ var ViewModel = function() {
         'venue information from Foursquare. Please check your internet connection, or try again later.';
     }, 8000);
 
-    // observable array for all 'attractions' i.e. items in locations object literal
-    // self.attractions = ko.observableArray();
     // standard array to render markers and for Foursquare ajax request
     self.attractions = [];
 
     // Instantiate objects using the 'Location' Constructor i.e. 
     // creates each locationItem using the 'Location' Constructor
-    locations.forEach(function(locationItem) {
-        
-        // creates an array with each 'locationItem'
+    locations.forEach(function(locationItem) {    
         self.attractions.push(new Location(locationItem));
+    });
 
-        // creates a location marker
+    // creates location markers for each object in the attractions array
+    self.attractions.forEach(function(locationItem) {
+        
         locationItem.marker = new google.maps.Marker({
             map: map,
             animation: google.maps.Animation.DROP,
             position: locationItem.position,
         });
 
-            // FourSquare ajax request for venue info
-            $.ajax({
-                url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
-                dataType: "json",
-                success: function (data) {
-                    // console.log('successfully called foursquare ajax func');
-                    // console.log(data);
-                    clearTimeout(fsqRequestTimeout);
+        // FourSquare ajax request for venue info
+        $.ajax({
+            url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
+            dataType: "json",
+            success: function (data) {
+                // console.log('successfully called foursquare ajax func');
+                // console.log(data);
+                clearTimeout(fsqRequestTimeout);
 
-                    // helpers: shortener and confirm valid json responses
-                    var venueInfo = data.response.venue;
+                // helpers: shortener and confirm valid json responses
+                var venueInfo = data.response.venue;
 
-                    var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
-                    if (description != "") {
-                        description = venueInfo.description;
-                    } else {
-                        description = "";
-                    }
-
-                    var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
-                    if (openStatus !=  "") {
-                      openStatus = venueInfo.hours.status;
-                    } else {
-                      openStatus = "Foursquare has no info at present";
-                    }
-
-                    var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
-                    if (address != "") {
-                        address = venueInfo.location.formattedAddress;
-                    } else {
-                        address = "Foursquare has no info at present";
-                    }
-
-                    var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
-                    if (rating != "") {
-                        rating = venueInfo.rating + ' / 10';
-                    } else {
-                        rating = "n/a";
-                    }
-
-                    var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
-                    if (tips != "") {
-                        tips = venueInfo.tips.groups[0].items[0].text;
-                    } else {
-                        tips = "No tip available at present";
-                    }
-
-                    // content for the infowindow if API callback is successful
-                    locationItem.contentString = '<div class="infowindow">' +
-                        '<h2>' + locationItem.name + '</h2>' +
-                        '<p>' + description + '</p>' +
-                        '<p>Opening hours: ' + openStatus + '</p>' +
-                        '<p>Location: ' + address + '</p>' +
-                        '<p>Rating: ' + rating + '</p>' +
-                        '<p>Best Tip: ' + tips + '</p>' +
-                        '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                        '<p>Information powered by Foursquare</p>' +
-                        '</div>';
-
-                    // config for infowindow if success
-                    locationItem.infowindow = new google.maps.InfoWindow({
-                        content: locationItem.contentString,
-                        maxWidth: 300
-                    });
+                var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
+                if (description != "") {
+                    description = venueInfo.description;
+                } else {
+                    description = "";
                 }
-            });
 
-            // listens for clicks on the marker and then executes... 
-            locationItem.marker.addListener('click', function() {
-                // console.log('marker clicked!');
-                // console.log(this);
-                toggleBounce(this);
-                locationItem.infowindow.open(map, locationItem.marker);
-            });
-        // });
+                var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
+                if (openStatus !=  "") {
+                  openStatus = venueInfo.hours.status;
+                } else {
+                  openStatus = "Foursquare has no info at present";
+                }
+
+                var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
+                if (address != "") {
+                    address = venueInfo.location.formattedAddress;
+                } else {
+                    address = "Foursquare has no info at present";
+                }
+
+                var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
+                if (rating != "") {
+                    rating = venueInfo.rating + ' / 10';
+                } else {
+                    rating = "n/a";
+                }
+
+                var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
+                if (tips != "") {
+                    tips = venueInfo.tips.groups[0].items[0].text;
+                } else {
+                    tips = "No tip available at present";
+                }
+
+                // content for the infowindow if API callback is successful
+                locationItem.contentString = '<div class="infowindow">' +
+                    '<h2>' + locationItem.name + '</h2>' +
+                    '<p>' + description + '</p>' +
+                    '<p>Opening hours: ' + openStatus + '</p>' +
+                    '<p>Location: ' + address + '</p>' +
+                    '<p>Rating: ' + rating + '</p>' +
+                    '<p>Best Tip: ' + tips + '</p>' +
+                    '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
+                    '<p>Information powered by Foursquare</p>' +
+                    '</div>';
+
+                // config for infowindow if success
+                locationItem.infowindow = new google.maps.InfoWindow({
+                    content: locationItem.contentString,
+                    maxWidth: 300
+                });
+            }
+        });
+
+        // listens for clicks on the marker and then executes... 
+        locationItem.marker.addListener('click', function() {
+            // console.log('marker clicked!');
+            // console.log(this);
+            toggleBounce(this);
+            locationItem.infowindow.open(map, locationItem.marker);
+        });
+
     });
 
     console.log('attractions are below');
@@ -242,10 +242,17 @@ var ViewModel = function() {
 
         // 2. run the filter and only add to the array if a match
         self.attractions.forEach(function(locationItem) {
+
+            locationItem.marker.setVisible(false);
+
             if(locationItem.name.toLowerCase().indexOf(searchFilter) !== -1) {
                 self.filteredAttractions.push(locationItem);
             }
-        })
+        });
+
+        self.filteredAttractions().forEach(function(locationItem) {
+            locationItem.marker.setVisible(true);
+        });
     };
 
     // Used to toggle CSS class '.open' - false means '.open'
@@ -258,7 +265,7 @@ var ViewModel = function() {
         self.toggleDrawer( !self.toggleDrawer() );
     };
 
-};
+// };
 
 // Maps API callback is to initApp
 // This function controls execution of the app

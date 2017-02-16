@@ -72,9 +72,12 @@ function initMap() {
 
 // Constructor for each location i.e. venue displayed on the map
 var Location = function(data) {
-    this.name = ko.observable(data.name);
-    this.position = ko.observable(data.position);
-    this.venueID = ko.observable(data.venueID);
+    // this.name = ko.observable(data.name);
+    // this.position = ko.observable(data.position);
+    // this.venueID = ko.observable(data.venueID);
+    this.name = data.name;
+    this.position = data.position;
+    this.venueID = data.venueID;
 };
 
 // helper function(s)
@@ -228,6 +231,22 @@ var ViewModel = function() {
     console.log('filtered Attractions are below');
     console.log(self.filteredAttractions());
 
+    // set user filter as ko observable
+    self.userFilter = ko.observable('');
+
+    self.runAttractionFilter = function() {
+        var searchFilter = self.userFilter().toLowerCase();
+
+        // 1. clear the array
+        self.filteredAttractions.removeAll();
+
+        // 2. run the filter and only add to the array if a match
+        self.attractions.forEach(function(locationItem) {
+            if(locationItem.name.toLowerCase().indexOf(searchFilter) !== -1) {
+                self.filteredAttractions.push(locationItem);
+            }
+        })
+    };
 
     // Used to toggle CSS class '.open' - false means '.open'
     // is not applied to the menu element. 

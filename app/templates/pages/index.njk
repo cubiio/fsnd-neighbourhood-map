@@ -16,10 +16,9 @@
 
           <span>List of Attractions:</span>
           <form>
-            <input type="text">
-            <button>Search</button>
+            <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
           </form>
-          <ul data-bind="foreach: attractions">
+          <ul <input data-bind="foreach: filteredAttractions">
             <li>
               <span data-bind="text: name"> </span>
             </li>

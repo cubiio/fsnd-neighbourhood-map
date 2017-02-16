@@ -75,8 +75,6 @@ var Location = function(data) {
     this.name = ko.observable(data.name);
     this.position = ko.observable(data.position);
     this.venueID = ko.observable(data.venueID);
-    // this.marker = ko.observable('');
-    // this.infowindow = ko.observable('');
 };
 
 // helper function(s)
@@ -119,7 +117,9 @@ var ViewModel = function() {
     }, 8000);
 
     // observable array for all 'attractions' i.e. items in locations object literal
-    this.attractions = ko.observableArray();
+    // self.attractions = ko.observableArray();
+    // standard array to render markers and for Foursquare ajax request
+    self.attractions = [];
 
     // Instantiate objects using the 'Location' Constructor i.e. 
     // creates each locationItem using the 'Location' Constructor
@@ -135,82 +135,99 @@ var ViewModel = function() {
             position: locationItem.position,
         });
 
-        // FourSquare ajax request for venue info
-        $.ajax({
-            url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
-            dataType: "json",
-            success: function (data) {
-                // console.log('successfully called foursquare ajax func');
-                console.log(data);
-                clearTimeout(fsqRequestTimeout);
+            // FourSquare ajax request for venue info
+            $.ajax({
+                url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
+                dataType: "json",
+                success: function (data) {
+                    // console.log('successfully called foursquare ajax func');
+                    // console.log(data);
+                    clearTimeout(fsqRequestTimeout);
 
-                // helpers: shortener and confirm valid json responses
-                var venueInfo = data.response.venue;
+                    // helpers: shortener and confirm valid json responses
+                    var venueInfo = data.response.venue;
 
-                var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
-                if (description != "") {
-                    description = venueInfo.description;
-                } else {
-                    description = "";
+                    var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
+                    if (description != "") {
+                        description = venueInfo.description;
+                    } else {
+                        description = "";
+                    }
+
+                    var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
+                    if (openStatus !=  "") {
+                      openStatus = venueInfo.hours.status;
+                    } else {
+                      openStatus = "Foursquare has no info at present";
+                    }
+
+                    var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
+                    if (address != "") {
+                        address = venueInfo.location.formattedAddress;
+                    } else {
+                        address = "Foursquare has no info at present";
+                    }
+
+                    var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
+                    if (rating != "") {
+                        rating = venueInfo.rating + ' / 10';
+                    } else {
+                        rating = "n/a";
+                    }
+
+                    var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
+                    if (tips != "") {
+                        tips = venueInfo.tips.groups[0].items[0].text;
+                    } else {
+                        tips = "No tip available at present";
+                    }
+
+                    // content for the infowindow if API callback is successful
+                    locationItem.contentString = '<div class="infowindow">' +
+                        '<h2>' + locationItem.name + '</h2>' +
+                        '<p>' + description + '</p>' +
+                        '<p>Opening hours: ' + openStatus + '</p>' +
+                        '<p>Location: ' + address + '</p>' +
+                        '<p>Rating: ' + rating + '</p>' +
+                        '<p>Best Tip: ' + tips + '</p>' +
+                        '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
+                        '<p>Information powered by Foursquare</p>' +
+                        '</div>';
+
+                    // config for infowindow if success
+                    locationItem.infowindow = new google.maps.InfoWindow({
+                        content: locationItem.contentString,
+                        maxWidth: 300
+                    });
                 }
+            });
 
-                var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
-                if (openStatus !=  "") {
-                  openStatus = venueInfo.hours.status;
-                } else {
-                  openStatus = "Foursquare has no info at present";
-                }
-
-                var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
-                if (address != "") {
-                    address = venueInfo.location.formattedAddress;
-                } else {
-                    address = "Foursquare has no info at present";
-                }
-
-                var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
-                if (rating != "") {
-                    rating = venueInfo.rating + ' / 10';
-                } else {
-                    rating = "n/a";
-                }
-
-                var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
-                if (tips != "") {
-                    tips = venueInfo.tips.groups[0].items[0].text;
-                } else {
-                    tips = "No tip available at present";
-                }
-
-                // content for the infowindow if API callback is successful
-                locationItem.contentString = '<div class="infowindow">' +
-                    '<h2>' + locationItem.name + '</h2>' +
-                    '<p>' + description + '</p>' +
-                    '<p>Opening hours: ' + openStatus + '</p>' +
-                    '<p>Location: ' + address + '</p>' +
-                    '<p>Rating: ' + rating + '</p>' +
-                    '<p>Best Tip: ' + tips + '</p>' +
-                    '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                    '<p>Information powered by Foursquare</p>' +
-                    '</div>';
-
-                // config for infowindow if success
-                locationItem.infowindow = new google.maps.InfoWindow({
-                    content: locationItem.contentString,
-                    maxWidth: 300
-                });
-            }
-        });
-
-        // listens for clicks on the marker and then executes... 
-        locationItem.marker.addListener('click', function() {
-            console.log('marker clicked!');
-            // console.log(this);
-            toggleBounce(this);
-            locationItem.infowindow.open(map, locationItem.marker);
-        });
+            // listens for clicks on the marker and then executes... 
+            locationItem.marker.addListener('click', function() {
+                // console.log('marker clicked!');
+                // console.log(this);
+                toggleBounce(this);
+                locationItem.infowindow.open(map, locationItem.marker);
+            });
+        // });
     });
-    // console.log(this.attractions());
+
+    console.log('attractions are below');
+    console.log(self.attractions);
+
+    // search and filter an array based on user input
+
+    // set-up empty observable array for visible attractions
+    self.filteredAttractions = ko.observableArray();
+
+    // populate visible attractions array with objects from attractions array
+    self.attractions.forEach(function(locationItem) {
+        self.filteredAttractions.push(locationItem);
+    });
+
+    console.log('filtered Attractions are below');
+    console.log(self.filteredAttractions());
+
 
     // Used to toggle CSS class '.open' - false means '.open'
     // is not applied to the menu element. 

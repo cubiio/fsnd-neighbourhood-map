@@ -98,7 +98,8 @@ var Location = function(data) {
     this.position = data.position;
     this.venueID = data.venueID;
     this.marker = null;
-    this.favourite = false;
+    this.favourite = null;
+    // this.favourite = false;
 };
 
 // helper function(s)
@@ -147,6 +148,12 @@ var ViewModel = function() {
     // creates each locationItem using the 'Location' Constructor
     locations.forEach(function(locationItem) {    
         self.attractions.push(new Location(locationItem));
+        
+        localStorage.setItem(locationItem.favourite, 'no');
+
+        var locFav = localStorage.getItem(locationItem.favourite);
+        console.log('0. localStorage saved ' + locationItem.name + ' as ' + locFav);
+
     });
 
     // creates location markers for each object in the attractions array
@@ -157,6 +164,7 @@ var ViewModel = function() {
             animation: google.maps.Animation.DROP,
             position: locationItem.position,
         });
+
 
         // FourSquare ajax request for venue info
         $.ajax({
@@ -309,22 +317,37 @@ var ViewModel = function() {
 
         self.favAttractions.removeAll();
 
+        var venueFav = localStorage.getItem(locationItem.favourite);
+        console.log('this is var venueFav ' + venueFav);
+        console.log('1. localStorage saved ' + locationItem.name + ' as ' + venueFav);
+
         // toggle favourite from truthy to falsy, or vice versa
-        // locationItem.favourite( !locationItem.favourite );
-        if (locationItem.favourite == false) {
-            locationItem.favourite = true;
+
+        if (localStorage.getItem(locationItem.favourite) == 'no') {
+        // if (venueFav == 'no') {
+
+            localStorage.setItem(locationItem.favourite, 'fav');
+
+            var newFav = localStorage.getItem(locationItem.favourite);
+
+            console.log('2 if false set to true: localStorage now set ' + locationItem.name + ' to ' + newFav);
+
         } else {
-            locationItem.favourite = false;
+            localStorage.setItem(locationItem.favourite, 'no');
+            var newFav = localStorage.getItem(locationItem.favourite);
+            console.log('3 if true set to false: localStorage now set ' + locationItem.name + ' to ' + newFav);
         }
 
-        // add to observable array if favourite is truthy
+        // add to observable array if favourite is 'fav'
         self.attractions.forEach(function(locationItem) {
 
-            if(locationItem.favourite == true) {
-                self.favAttractions.push(locationItem);
+            for (var i = 0; i < localStorage.length; i++) {
+                if (localStorage.getItem(locationItem[i]) == 'fav') {
+                    self.favAttractions.push(locationItem);
+                }
             }
-            // console.log('fav Attractions are below');
-            // console.log(self.favAttractions());
+            console.log('fav Attractions are below');
+            console.log(self.favAttractions());
         });
     };
 

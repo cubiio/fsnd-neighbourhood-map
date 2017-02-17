@@ -215,15 +215,8 @@ var ViewModel = function() {
                         '<p>Rating: ' + rating + '</p>' +
                         '<p>Best Tip: ' + tips + '</p>' +
                         '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                        '<p>Information powered by Foursquare</p>' +
+                        '<p class="foursquare_attribution">Information powered by Foursquare</p>' +
                     '</div>' +  // end info_wrapper
-
-                    // '<div class="fav_wrapper">' +
-                    // '<p class="fav_text" >Click to add to favourites</p>' +
-                    //     '<div class="fav">' +
-                    //     '<i data-bind="click: favouriteAttractions" class="fa fa-star" aria-hidden="true"></i>' +
-                    //     '</div>' +
-                    // '</div>' + // end fav_wrapper
                     
                     '</div>'; // end infowindow div class
 

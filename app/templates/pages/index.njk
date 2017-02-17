@@ -4,7 +4,7 @@
 
 
   <div class="header">
-    <h1>Munich, Germany</h1>
+    <h1 class="header_title">Neighbourhood Map: Munich</h1>
     <a  class="header_menu">
       <i data-bind="click: openDrawer" class="fa fa-bars"></i>
     </a>
@@ -14,7 +14,7 @@
     
     <div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
 
-          <span>List of Attractions:</span>
+          <span class="list_title" >List of Attractions:</span>
           <form>
             <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
           </form>
@@ -24,8 +24,8 @@
             </li>
           </ul>
 
-          <span>Favourites:</span>
-          <p>Right click to add</p>
+          <span class="list_title">Favourites:</span>
+          <p class="add_fav_instructions" >(Right click to add/remove)</p>
           <ul <input data-bind="foreach: favAttractions">
             <li>
               <span data-bind="text: name"> </span>

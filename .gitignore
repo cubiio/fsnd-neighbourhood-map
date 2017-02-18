@@ -15,9 +15,9 @@ bower_components
 jspm_packages
 
 # ignore generated files and folders
-*.css
-app/index.html
-dist
+# *.css
+# app/index.html
+# dist
 
 # ignore source and processing images
 app/images_src

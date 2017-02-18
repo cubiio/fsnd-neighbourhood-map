@@ -1,47 +1,54 @@
 # Neighbourhood Map Project 
 ## About
 
-This is a front end project, part of my Udacity Full Stack Nanodegree.
+This is front end project is part of my Udacity Full Stack Nanodegree.
 
-### Built with:
+### Design and Functionality
 
-The project is still WIP but the intent is to use the below technologies.
+- MVVM design paradigm, using [Knockout.js](http://knockoutjs.com/) organisational library
+- Utilises Google Maps API to render a map of Munich, Germany
+- Users can select (left mouse click) a location marker and it will display information on the location (info powered by Foursquare API)
+- Users can search for locations, and the location list and markers will update based on the search
+- Users can select (right mouse click) a location marker and it will be added to the favourites list
+- Production quality code in the `/dist` folder, including minification, uglification and cache busting
+
+
+### Technology Colophon
 
 - HTML and Nunjucks templates
-- CSS, Flexbox
+- CSS and Flexbox
 - Javascript
 - Knockout.js
 - Gulp task runner
 
-### APIs used:
+### 3rd Party APIs
 
-- [Google Maps APIs   |  Google Developers](https://developers.google.com/maps/)
+- [Google Maps APIs](https://developers.google.com/maps/)
+- [Foursquare for Developers](https://developer.foursquare.com/)
 
 
 ## Setup instructions 
 
 ### Easy
 
-Open `index.html` in your browser. 
+Download or clone the project. 
+
+Option 1 - use the development code in the `/app` folder - open `index.html` in your browser.
+
+Option 2 - use the production code in the `/dist` folder - open `index.html` in your browser. Note, ordinarily I wouldn’t upload `/dist` to GitHub, however for this project as part of the Udacity code review I did.
+
 
 ### Using Gulp
 
-There are several Gulp tasks in the `gulpfile.js`, and each section is clearly commented as to what the tasks are.
-
-**tl;dr**
-
-The two key tasks are as follows:
+The Gulp task to run the dev server with live reload is
 
 ```
-// default task is for dev 
-// this loads the app in the browser and live reloads after any changes
-$ gulp 
-
-// build task to create app in /dist folder
-$ gulp build
+$ gulp
 ```
 
-Note, the default `gulp` dev task runs in Chrome Canary. To change this to a different browser, open the `config.js` file and go to the browserSync settings. Edit line 4 to see your dev browser of choice:
+Run this command from the repo root directory, after having cloned/downloaded the repo to your local machine.
+
+Note, the default `gulp` dev task runs the server in _Chrome Canary_. To change this to a different browser, open the `config.js` file and change the browserSync settings: edit line 4 to see your dev browser of choice:
 
 ```
 // current setting
@@ -51,17 +58,68 @@ browser:        'firefox',
 browser:        'google chrome',
 ```
 
+There are other Gulp tasks in the `gulpfile.js` file, and each section is clearly commented as to what the tasks are.
+
+The other key task to call out is to build the ‘production’ version of the code which uglifies, minifies and cache busts the code into the `/dist` folder
+
+```
+$ gulp build
+```
+
+
 
 ## Credit
 
-Thanks go to [ ] for help, support and coaching
+Thanks go to Karol, Udacity forum mentor and 1:1 coach for help. Also not forgetting other forum members for their comments, support and older posts which provided guidance and provoked thought in my own design and development of the app.
 
-**Sources of info and inspiration:**
+### How I built this app
+
+My blog post [Building a Neighbourhood Map](https://cubiio.github.io/2017/02/18/building_map_project/), whilst written as part of my own education, is also available for those interested on how I developed this app. It includes more detail on my findings, learnings, frustrations and celebrations on building this app. 
+
+**todo: add link**
+
+### Document Sources and Attribution:
+
+#### Documentation
 
 - Google Maps API [tutorial](https://developers.google.com/maps/documentation/javascript/adding-a-google-map#key)
 - Scaffolding the app with [HTML5 Boilerplate](https://html5boilerplate.com/)
+- [Knockout : Home](http://knockoutjs.com/)
+
+#### Attribution
+
+**Managing Foursquare JSON responses**
+Resolve the issue where Foursquare does not always have the info for each venue e.g. one venue has a description and a price range, another venue does not. This caused the affected infowindows to not open when clicked on, and throw an error in the console.
+
+Solution:
+
+- Per this forum post: [Udacity forum post](https://discussions.udacity.com/t/difficulties-integrating-foursquare/183539/7), use ‘hasOwnProperty`
+- [MDN: hasOwnProperty](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty)
+- For example:
+
+``` javascript
+var venues = result.response.hasOwnProperty(“venues”) ? result.response.venues : “”;
+
+if (venues !=  “”) {
+  …
+} else {
+  …
+}
+```
 
 
-**ToDO: Add more info to README**
-- instructions for building the project and running the tool
-- Make reference to 3rd party APIs used
+**Google API error handling**
+
+- [Udacity Forum re onError](https://discussions.udacity.com/t/handling-google-maps-in-async-and-fallback/34282#onerror)
+- [GlobalEventHandlers.onerror - Web APIs | MDN](https://developer.mozilla.org/en/docs/Web/API/GlobalEventHandlers/onerror)
+
+
+**User filtered array and favourites list**
+
+These challenges are covered in more detail on my blogpost. In summary, I used the below sources to try several ways of solving these challenges. In particular, this [KO map example](https://codepen.io/prather-mcs/pen/KpjbNN) from one of the Udacity forum mentors to create a user filtered array (rendered as a list) gave me lots to think about. I wrote it out using pen and paper (old school, I know) how it worked, slept on it, then worked on implementing my own version to create a user filtered array and a favourites list. More detail on this process in my blogpost.
+
+The key links are:
+
+- [Udacity forum re user input to filter an array](https://discussions.udacity.com/t/how-to-implement-knockout-into-the-project/181122)
+- [Utility functions in KnockoutJS - Knock Me Out](http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html)
+- [Array.prototype.indexOf() - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)

@@ -98,8 +98,7 @@ var Location = function(data) {
     this.position = data.position;
     this.venueID = data.venueID;
     this.marker = null;
-    this.favourite = null;
-    // this.favourite = false;
+    this.favourite = false;
 };
 
 // helper function(s)
@@ -118,14 +117,12 @@ function toggleBounce(marker) {
 
 // alerts the user if Google Maps fails to load
 function googleError() {
-    // console.log('googleError invoked')
     alert('Google Maps has failed to load. Please check your internet connection or try again later.');
 }
 
 
 // ViewModel START
 var ViewModel = function() {
-    console.log('ViewModel invoked');
 
     var self = this;
 
@@ -136,7 +133,6 @@ var ViewModel = function() {
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
     var fsqRequestTimeout = setTimeout(function(){
-        // console.log("Failed to get FourSquare info");
         document.getElementById('js_foursquareError').innerHTML += 'Failed to get ' + 
         'venue information from Foursquare. Please check your internet connection, or try again later.';
     }, 8000);
@@ -148,12 +144,6 @@ var ViewModel = function() {
     // creates each locationItem using the 'Location' Constructor
     locations.forEach(function(locationItem) {    
         self.attractions.push(new Location(locationItem));
-        
-        localStorage.setItem(locationItem.favourite, 'no');
-
-        var locFav = localStorage.getItem(locationItem.favourite);
-        console.log('0. localStorage saved ' + locationItem.name + ' as ' + locFav);
-
     });
 
     // creates location markers for each object in the attractions array
@@ -164,7 +154,6 @@ var ViewModel = function() {
             animation: google.maps.Animation.DROP,
             position: locationItem.position,
         });
-
 
         // FourSquare ajax request for venue info
         $.ajax({
@@ -251,9 +240,6 @@ var ViewModel = function() {
 
     });
 
-    console.log('attractions are below');
-    console.log(self.attractions);
-
     // search and filter an array based on user input
 
     // set-up empty observable array for visible attractions
@@ -263,9 +249,6 @@ var ViewModel = function() {
     self.attractions.forEach(function(locationItem) {
         self.filteredAttractions.push(locationItem);
     });
-
-    console.log('filtered Attractions are below');
-    console.log(self.filteredAttractions());
 
     // set user filter as ko observable
     self.userFilter = ko.observable('');
@@ -313,41 +296,22 @@ var ViewModel = function() {
     // this.favourite = ko.observable(false);
 
     this.favouriteAttractions = function(locationItem) {
-        console.log('You want to favourite ' + locationItem.name);
 
         self.favAttractions.removeAll();
 
-        var venueFav = localStorage.getItem(locationItem.favourite);
-        console.log('this is var venueFav ' + venueFav);
-        console.log('1. localStorage saved ' + locationItem.name + ' as ' + venueFav);
-
         // toggle favourite from truthy to falsy, or vice versa
-
-        if (localStorage.getItem(locationItem.favourite) == 'no') {
-        // if (venueFav == 'no') {
-
-            localStorage.setItem(locationItem.favourite, 'fav');
-
-            var newFav = localStorage.getItem(locationItem.favourite);
-
-            console.log('2 if false set to true: localStorage now set ' + locationItem.name + ' to ' + newFav);
-
+        if (locationItem.favourite == false) {
+            locationItem.favourite = true;
         } else {
-            localStorage.setItem(locationItem.favourite, 'no');
-            var newFav = localStorage.getItem(locationItem.favourite);
-            console.log('3 if true set to false: localStorage now set ' + locationItem.name + ' to ' + newFav);
+            locationItem.favourite = false;
         }
 
-        // add to observable array if favourite is 'fav'
+        // add to observable array if favourite is truthy
         self.attractions.forEach(function(locationItem) {
 
-            for (var i = 0; i < localStorage.length; i++) {
-                if (localStorage.getItem(locationItem[i]) == 'fav') {
-                    self.favAttractions.push(locationItem);
-                }
+            if(locationItem.favourite == true) {
+                self.favAttractions.push(locationItem);
             }
-            console.log('fav Attractions are below');
-            console.log(self.favAttractions());
         });
     };
 

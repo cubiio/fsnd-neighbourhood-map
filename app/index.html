@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neighbour Map: Munich, Germany</title>
+    
+    <!-- build:css css/styles.min.css -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+    <!-- endbuild -->
+
+    <!-- build:js js/async.modernizr-2.8.3.min.js -->
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    <!-- endbuild -->
+    <script src="https://use.fontawesome.com/3e19548892.js"></script>
+</head>
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    
+    
+
+
+  <div class="header">
+    <h1 class="header_title">Neighbourhood Map: Munich</h1>
+    <a  class="header_menu">
+      <i data-bind="click: openDrawer" class="fa fa-bars"></i>
+    </a>
+  </div>
+
+  <div class="map_wrapper">
+    
+    <div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
+
+          <span class="list_title" >List of Attractions:</span>
+          <form>
+            <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
+          </form>
+          <ul <input data-bind="foreach: filteredAttractions">
+            <li>
+              <span data-bind="text: name"> </span>
+            </li>
+          </ul>
+
+          <span class="list_title">Favourites:</span>
+          <p class="add_fav_instructions" >(Right click to add/remove)</p>
+          <ul <input data-bind="foreach: favAttractions">
+            <li>
+              <span data-bind="text: name"> </span>
+            </li>
+          </ul>
+    </div>
+      
+    <div class="map" id="js_map"></div>
+
+  </div>
+
+  <div class="errorMsg">
+    <div id="js_foursquareError"></div>
+  </div>
+
+
+<!-- Footer section start -->
+<div class="footer_wrapper">
+    <div class="footer_container">
+        <p class="footer_text">Built with ♥ by <a href="https://samatkins.me/" target="_blank">Sam</a>. View source <a href="https://github.com/cubiio/fsnd-neighbourhood-map" target="_blank">code</a>. © 2017 Sam Atkins</p>
+    </div>
+</div>
+<!-- Footer section end -->
+
+
+
+    <!-- build:js js/main.concat.js -->
+        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <script src="js/vendor/plugins.js"></script>
+        <script type='text/javascript' src='js/lib/knockout-3.4.1.js'></script>
+        <script src="js/main.js"></script>
+    <!-- endbuild -->
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMz_dtQTIrkczSEPgNogsdNZMI9GaWHmI&callback=initApp" onerror="googleError()"> 
+    </script>
+
+</body>
+</html>

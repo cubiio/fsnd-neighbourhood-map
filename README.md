@@ -76,7 +76,6 @@ Thanks go to Karol, Udacity forum mentor and 1:1 coach for help. Also not forget
 
 My blog post [Building a Neighbourhood Map](https://cubiio.github.io/2017/02/18/building_map_project/), whilst written as part of my own education, is also available for those interested on how I developed this app. It includes more detail on my findings, learnings, frustrations and celebrations on building this app. 
 
-**todo: add link**
 
 ### Document Sources and Attribution:
 
@@ -85,10 +84,12 @@ My blog post [Building a Neighbourhood Map](https://cubiio.github.io/2017/02/18/
 - Google Maps API [tutorial](https://developers.google.com/maps/documentation/javascript/adding-a-google-map#key)
 - Scaffolding the app with [HTML5 Boilerplate](https://html5boilerplate.com/)
 - [Knockout : Home](http://knockoutjs.com/)
+- [Foursquare for Developers](https://developer.foursquare.com/)
 
 #### Attribution
 
 **Managing Foursquare JSON responses**
+
 Resolve the issue where Foursquare does not always have the info for each venue e.g. one venue has a description and a price range, another venue does not. This caused the affected infowindows to not open when clicked on, and throw an error in the console.
 
 Solution:

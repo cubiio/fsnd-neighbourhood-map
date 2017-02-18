@@ -212,7 +212,7 @@ var ViewModel = function() {
                         '<p>Rating: ' + rating + '</p>' +
                         '<p>Best Tip: ' + tips + '</p>' +
                         '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                        '<p class="foursquare_attribution">Information powered by Foursquare</p>' +
+                        '<p class="foursquare-attribution">Information powered by Foursquare</p>' +
                     '</div>' +  // end info_wrapper
                     
                     '</div>'; // end infowindow div class

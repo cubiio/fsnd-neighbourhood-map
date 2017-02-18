@@ -3,18 +3,18 @@
 {% block content %}
 
 
-  <div class="header">
-    <h1 class="header_title">Neighbourhood Map: Munich</h1>
-    <a  class="header_menu">
+  <header class="header">
+    <h1 class="header-title">Neighbourhood Map: Munich</h1>
+    <a  class="header-menu">
       <i data-bind="click: openDrawer" class="fa fa-bars"></i>
     </a>
-  </div>
+  </header>
 
-  <div class="map_wrapper">
+  <main class="map-wrapper">
     
-    <div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
+    <div data-bind="css: { open: toggleDrawer() == true }" class="list-menu">
 
-          <span class="list_title" >List of Attractions:</span>
+          <span class="list-title" >List of Attractions:</span>
           <form>
             <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
           </form>
@@ -24,8 +24,8 @@
             </li>
           </ul>
 
-          <span class="list_title">Favourites:</span>
-          <p class="add_fav_instructions" >(Right click to add/remove)</p>
+          <span class="list-title">Favourites:</span>
+          <p class="add-fav-instructions" >(Right click location marker to add/remove)</p>
           <ul <input data-bind="foreach: favAttractions">
             <li>
               <span data-bind="text: name"> </span>
@@ -35,11 +35,11 @@
       
     <div class="map" id="js_map"></div>
 
-  </div>
+  </main>
 
-  <div class="errorMsg">
+  <section class="error-message">
     <div id="js_foursquareError"></div>
-  </div>
+  </section>
 
 {% include "partials/footer.njk" %}
 

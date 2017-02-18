@@ -120,13 +120,13 @@ textarea {
     margin-right: auto;
   }
 
-  h1.header_title {
+  .header-title {
     font-size: 1em;
     text-align: center;
     margin-right: 20px;
   }
 
-  .header_menu {
+  .header-menu {
     flex: 1;
     align-self: center;
     display: inline-block;
@@ -135,7 +135,7 @@ textarea {
     padding: 1em;
   }
 
-  .list_menu {
+  .list-menu {
     z-index: 10;
     background-color: #fff;
     width: 300px;
@@ -147,7 +147,7 @@ textarea {
     transition: transform 0.3s ease;
   }
 
-  .list_menu.open {
+  .list-menu.open {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
   }
@@ -169,14 +169,14 @@ textarea {
     margin-right: auto;
   }
 
-  h1.header_title {
+  .header-title {
     font-size: 1.2em;
     text-align: center;
     margin-left: 10px;
     margin-right: 10px;
   }
 
-  .header_menu {
+  .header-menu {
     flex: 1;
     align-self: center;
     display: inline-block;
@@ -185,7 +185,7 @@ textarea {
     padding: 1em;
   }
 
-  .list_menu {
+  .list-menu {
     z-index: 10;
     background-color: #fff;
     width: 300px;
@@ -197,7 +197,7 @@ textarea {
     transition: transform 0.3s ease;
   }
 
-  .list_menu.open {
+  .list-menu.open {
     -webkit-transform: translate(0, 0);
     transform: translate(0, 0);
   }
@@ -211,11 +211,11 @@ textarea {
 
 @media screen and (min-width: 651px) {
 
-  h1.header_title {
-    margin-left: 10px;
+  .header-title {
+    margin-left: 0px;
   }
 
-  .header_menu {
+  .header-menu {
     display: none;
   }
 
@@ -225,32 +225,32 @@ textarea {
   }
 }
 
-.map_wrapper {
+.map-wrapper {
   height: 100%;
   width: 100%;
   display: flex;
 }
 
-.list_menu {
+.list-menu {
   margin-left: 10px;
   margin-right: 10px;
 }
 
-.list_title {
+.list-title {
   font-weight: bold;
 }
 
-.add_fav_instructions {
+.add-fav-instructions {
   font-size: 0.7em;
   font-weight: bold;
   color: grey;
 }
 
-.foursquare_attribution {
-  @extend .add_fav_instructions;
+.foursquare-attribution {
+  @extend .add-fav-instructions;
 }
 
-.footer_wrapper {
+.footer-wrapper {
 display: flex;
 justify-content: center;
 font-size: 0.8em;

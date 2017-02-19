@@ -238,8 +238,8 @@ var ViewModel = function() {
     });
 
     this.displayInfo = function(locationItem) {
-        console.log('you clicked ' + locationItem.name);
-        var marker = locationItem.marker
+        // console.log('you clicked ' + locationItem.name);
+        let marker = locationItem.marker
         bounceMarker(marker);
         locationItem.infowindow.open(map, locationItem.marker);
     };

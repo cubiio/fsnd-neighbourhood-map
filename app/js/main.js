@@ -133,6 +133,10 @@ var ViewModel = function() {
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
 
+    var infowindow = new google.maps.InfoWindow({
+        maxWidth: 300,
+    });
+
     // standard array to render markers and for Foursquare ajax request
     self.attractions = [];
 
@@ -207,11 +211,17 @@ var ViewModel = function() {
                     '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
                     '<p class="foursquare-attribution">Information powered by Foursquare</p>' +
                 '</div>' +  // end info_wrapper
+
+                '<div class="fav">' +
+                    '<p id="js_fav"> <i class="fa fa-star" aria-hidden="true"></i>' +
+                    ' Click to favourite the location </p>' +
+                '</div>' +  // end fav
                 
                 '</div>'; // end infowindow div class
 
             // config for infowindow if success
-            locationItem.infowindow = new google.maps.InfoWindow({
+            // locationItem.infowindow = new google.maps.InfoWindow({
+            locationItem.infowindow = google.maps.InfoWindow({
                 content: locationItem.contentString,
                 maxWidth: 300
             })
@@ -223,17 +233,27 @@ var ViewModel = function() {
         })
 
         // listens for clicks on the marker and then executes... 
-        locationItem.marker.addListener('click', function() {
-            // console.log('marker clicked!');
-            // console.log(this);
+        
+        google.maps.event.addDomListener(locationItem.marker, 'click', function() {
+            console.log('marker clicked!');
+            console.log(this);
             toggleBounce(this);
-            locationItem.infowindow.open(map, locationItem.marker);
+            infowindow.open(map, locationItem.marker);
+            // set content for infowindow - how to?
+            infowindow.setContent(locationItem.contentString);
         });
 
-        locationItem.marker.addListener('rightclick', function() {
-            // console.log('right click on marker ' + locationItem.name);
-            self.favouriteAttractions(locationItem);
-        })
+        // locationItem.marker.addListener('click', function() {
+        //     // console.log('marker clicked!');
+        //     // console.log(this);
+        //     toggleBounce(this);
+        //     locationItem.infowindow.open(map, locationItem.marker);
+        // });
+
+        // locationItem.marker.addListener('rightclick', function() {
+        //     // console.log('right click on marker ' + locationItem.name);
+        //     self.favouriteAttractions(locationItem);
+        // })
 
     });
 
@@ -254,6 +274,12 @@ var ViewModel = function() {
             }, 2100);  // 3 bounces then stops
         }
     }
+    
+    // add listener to 'fav' star in in infowindow
+    // modify below?
+    // google.maps.event.addDomListener(mapDiv, 'click', function() {
+    //   window.alert('Map was clicked!');
+    // });
 
     // search and filter an array based on user input
 

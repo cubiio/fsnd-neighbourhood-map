@@ -23,31 +23,31 @@
     
 
 
-  <div class="header">
-    <h1 class="header_title">Neighbourhood Map: Munich</h1>
-    <a  class="header_menu">
+  <header class="header">
+    <h1 class="header-title">Neighbourhood Map: Munich</h1>
+    <a  class="header-menu">
       <i data-bind="click: openDrawer" class="fa fa-bars"></i>
     </a>
-  </div>
+  </header>
 
-  <div class="map_wrapper">
+  <main class="map-wrapper">
     
-    <div data-bind="css: { open: toggleDrawer() == true }" class="list_menu">
+    <div data-bind="css: { open: toggleDrawer() == true }" class="list-menu">
 
-          <span class="list_title" >List of Attractions:</span>
+          <span class="list-title" >List of Attractions:</span>
           <form>
             <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
           </form>
-          <ul <input data-bind="foreach: filteredAttractions">
-            <li>
+          <ul data-bind="foreach: filteredAttractions">
+            <li data-bind="click: $parent.displayInfo" class="list-hover">
               <span data-bind="text: name"> </span>
             </li>
           </ul>
 
-          <span class="list_title">Favourites:</span>
-          <p class="add_fav_instructions" >(Right click to add/remove)</p>
-          <ul <input data-bind="foreach: favAttractions">
-            <li>
+          <span class="list-title">Favourites:</span>
+          <p class="add-fav-instructions" >(Right click location marker to add/remove)</p>
+          <ul data-bind="foreach: favAttractions">
+            <li data-bind="click: $parent.displayInfo" class="list-hover">
               <span data-bind="text: name"> </span>
             </li>
           </ul>
@@ -55,26 +55,24 @@
       
     <div class="map" id="js_map"></div>
 
-  </div>
+  </main>
 
-  <div class="errorMsg">
-    <div id="js_foursquareError"></div>
-  </div>
+  <section class="error-message">
+    <div id="js_foursquare-error"></div>
+  </section>
 
 
 <!-- Footer section start -->
-<div class="footer_wrapper">
-    <div class="footer_container">
-        <p class="footer_text">Built with ♥ by <a href="https://samatkins.me/" target="_blank">Sam</a>. View source <a href="https://github.com/cubiio/fsnd-neighbourhood-map" target="_blank">code</a>. © 2017 Sam Atkins</p>
-    </div>
-</div>
+<footer class="footer-wrapper">
+        <p class="footer-text">Built with ♥ by <a href="https://samatkins.me/" target="_blank">Sam</a>. View source <a href="https://github.com/cubiio/fsnd-neighbourhood-map" target="_blank">code</a>. © 2017 Sam Atkins</p>
+</footer>
 <!-- Footer section end -->
 
 
 
     <!-- build:js js/main.concat.js -->
         <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.1.min.js"><\/script>')</script>
         <script src="js/vendor/plugins.js"></script>
         <script type='text/javascript' src='js/lib/knockout-3.4.1.js'></script>
         <script src="js/main.js"></script>

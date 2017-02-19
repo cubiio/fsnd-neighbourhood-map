@@ -132,10 +132,6 @@ var ViewModel = function() {
     var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
-    var fsqRequestTimeout = setTimeout(function(){
-        document.getElementById('js_foursquareError').innerHTML += 'Failed to get ' + 
-        'venue information from Foursquare. Please check your internet connection, or try again later.';
-    }, 8000);
 
     // standard array to render markers and for Foursquare ajax request
     self.attractions = [];
@@ -158,72 +154,73 @@ var ViewModel = function() {
         // FourSquare ajax request for venue info
         $.ajax({
             url: 'https://api.foursquare.com/v2/venues/' + locationItem.venueID + fsqClient + fsqClientID + fsqClientSecret + vParam + mParam,
-            dataType: "json",
-            success: function (data) {
-                // console.log('successfully called foursquare ajax func');
-                // console.log(data);
-                clearTimeout(fsqRequestTimeout);
+            dataType: "json"
+        }).done(function (data) {
 
-                // helpers: shortener and confirm valid json responses
-                var venueInfo = data.response.venue;
+            // helpers: shortener and confirm valid json responses
+            var venueInfo = data.response.venue;
 
-                var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
-                if (description != "") {
-                    description = venueInfo.description;
-                } else {
-                    description = "";
-                }
-
-                var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
-                if (openStatus !=  "") {
-                  openStatus = venueInfo.hours.status;
-                } else {
-                  openStatus = "Foursquare has no info at present";
-                }
-
-                var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
-                if (address != "") {
-                    address = venueInfo.location.formattedAddress;
-                } else {
-                    address = "Foursquare has no info at present";
-                }
-
-                var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
-                if (rating != "") {
-                    rating = venueInfo.rating + ' / 10';
-                } else {
-                    rating = "n/a";
-                }
-
-                var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
-                if (tips != "") {
-                    tips = venueInfo.tips.groups[0].items[0].text;
-                } else {
-                    tips = "No tip available at present";
-                }
-
-                // content for the infowindow if API callback is successful
-                locationItem.contentString = '<div class="infowindow">' +
-                    '<div class="info_wrapper">' +
-                        '<h2>' + locationItem.name + '</h2>' +
-                        '<p>' + description + '</p>' +
-                        '<p>Opening hours: ' + openStatus + '</p>' +
-                        '<p>Location: ' + address + '</p>' +
-                        '<p>Rating: ' + rating + '</p>' +
-                        '<p>Best Tip: ' + tips + '</p>' +
-                        '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
-                        '<p class="foursquare-attribution">Information powered by Foursquare</p>' +
-                    '</div>' +  // end info_wrapper
-                    
-                    '</div>'; // end infowindow div class
-
-                // config for infowindow if success
-                locationItem.infowindow = new google.maps.InfoWindow({
-                    content: locationItem.contentString,
-                    maxWidth: 300
-                });
+            var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
+            if (description != "") {
+                description = venueInfo.description;
+            } else {
+                description = "";
             }
-        });
+
+            var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
+            if (openStatus !=  "") {
+              openStatus = venueInfo.hours.status;
+            } else {
+              openStatus = "Foursquare has no info at present";
+            }
+
+            var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
+            if (address != "") {
+                address = venueInfo.location.formattedAddress;
+            } else {
+                address = "Foursquare has no info at present";
+            }
+
+            var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
+            if (rating != "") {
+                rating = venueInfo.rating + ' / 10';
+            } else {
+                rating = "n/a";
+            }
+
+            var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
+            if (tips != "") {
+                tips = venueInfo.tips.groups[0].items[0].text;
+            } else {
+                tips = "No tip available at present";
+            }
+
+            // content for the infowindow if API callback is successful
+            locationItem.contentString = '<div class="infowindow">' +
+                '<div class="info_wrapper">' +
+                    '<h2>' + locationItem.name + '</h2>' +
+                    '<p>' + description + '</p>' +
+                    '<p>Opening hours: ' + openStatus + '</p>' +
+                    '<p>Location: ' + address + '</p>' +
+                    '<p>Rating: ' + rating + '</p>' +
+                    '<p>Best Tip: ' + tips + '</p>' +
+                    '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
+                    '<p class="foursquare-attribution">Information powered by Foursquare</p>' +
+                '</div>' +  // end info_wrapper
+                
+                '</div>'; // end infowindow div class
+
+            // config for infowindow if success
+            locationItem.infowindow = new google.maps.InfoWindow({
+                content: locationItem.contentString,
+                maxWidth: 300
+            })
+
+        // error handling for foursquare ajax request
+        }).fail(function() {
+            document.getElementById('js_foursquare-error').innerHTML += 'Failed to get ' + 
+            'venue information from Foursquare. Please check your internet connection, or try again later.';
+        })
 
         // listens for clicks on the marker and then executes... 
         locationItem.marker.addListener('click', function() {

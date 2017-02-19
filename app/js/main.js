@@ -237,6 +237,24 @@ var ViewModel = function() {
 
     });
 
+    this.displayInfo = function(locationItem) {
+        console.log('you clicked ' + locationItem.name);
+        var marker = locationItem.marker
+        bounceMarker(marker);
+        locationItem.infowindow.open(map, locationItem.marker);
+    };
+
+    function bounceMarker(marker) {
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+                marker.setAnimation(null);
+            }, 2100);  // 3 bounces then stops
+        }
+    }
+
     // search and filter an array based on user input
 
     // set-up empty observable array for visible attractions

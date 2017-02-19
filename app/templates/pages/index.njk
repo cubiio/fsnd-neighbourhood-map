@@ -19,7 +19,7 @@
             <input placeholder="Search..." data-bind="textInput: userFilter, event: {keyup: runAttractionFilter}">
           </form>
           <ul data-bind="foreach: filteredAttractions">
-            <li data-bind="click: $parent.displayInfo">
+            <li data-bind="click: $parent.displayInfo" class="list-hover">
               <span data-bind="text: name"> </span>
             </li>
           </ul>
@@ -27,7 +27,7 @@
           <span class="list-title">Favourites:</span>
           <p class="add-fav-instructions" >(Right click location marker to add/remove)</p>
           <ul data-bind="foreach: favAttractions">
-            <li data-bind="click: $parent.displayInfo">
+            <li data-bind="click: $parent.displayInfo" class="list-hover">
               <span data-bind="text: name"> </span>
             </li>
           </ul>

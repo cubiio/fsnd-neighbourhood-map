@@ -113,7 +113,7 @@ var ViewModel = function() {
 
     // config for FourSquare ajax request
     var fsqClient = '?client_id=';
-    var fsqClientID = 'SAM-IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
+    var fsqClientID = 'IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
     var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
@@ -150,39 +150,14 @@ var ViewModel = function() {
             var venueInfo = data.response.venue;
 
             var description = venueInfo.hasOwnProperty("description") ? venueInfo.description : "";
-            if (description != "") {
-                description = venueInfo.description;
-            } else {
-                description = "";
-            }
 
-            var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours : "";
-            if (openStatus !=  "") {
-              openStatus = venueInfo.hours.status;
-            } else {
-              openStatus = "Foursquare has no info at present";
-            }
+            var openStatus = venueInfo.hasOwnProperty("hours") ? venueInfo.hours.status : "Foursquare has no info at present";
 
-            var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "";
-            if (address != "") {
-                address = venueInfo.location.formattedAddress;
-            } else {
-                address = "Foursquare has no info at present";
-            }
+            var address = venueInfo.location.hasOwnProperty("formattedAddress") ? venueInfo.location.formattedAddress : "Foursquare has no info at present";
 
-            var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating : "";
-            if (rating != "") {
-                rating = venueInfo.rating + ' / 10';
-            } else {
-                rating = "n/a";
-            }
+            var rating = venueInfo.hasOwnProperty("rating") ? venueInfo.rating + ' / 10' : "No rating available";
 
-            var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups : "";
-            if (tips != "") {
-                tips = venueInfo.tips.groups[0].items[0].text;
-            } else {
-                tips = "No tip available at present";
-            }
+            var tips = venueInfo.tips.hasOwnProperty("groups") ? venueInfo.tips.groups[0].items[0].text : "No tip available at present";
 
             // content for the infowindow if API callback is successful
             locationItem.contentString = '<div class="infowindow">' +
@@ -196,12 +171,6 @@ var ViewModel = function() {
                     '<p>Click to read more on <a href="' + venueInfo.canonicalUrl + '?ref=' + fsqClientID + '" target="_blank">Foursquare</a></p>' +
                     '<p class="foursquare-attribution">Information powered by Foursquare</p>' +
                 '</div>' +  // end info_wrapper
-
-                '<div class="fav">' +
-                    '<p id="js_fav"> <i class="fa fa-star" aria-hidden="true"></i>' +
-                    ' Click to favourite the location </p>' +
-                '</div>' +  // end fav
-                
                 '</div>'; // end infowindow div class
 
             // config for infowindow if successful
@@ -228,7 +197,8 @@ var ViewModel = function() {
         google.maps.event.addDomListener(locationItem.marker, 'rightclick', function() {
             // console.log('right click on marker ' + locationItem.name);
             self.favouriteAttractions(locationItem);
-        })
+        });
+
     });
 
     this.displayInfo = function(locationItem) {

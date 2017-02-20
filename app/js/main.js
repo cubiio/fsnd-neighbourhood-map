@@ -75,7 +75,6 @@ var map;
 
 // Async callback to Google Maps API
 function initMap() {
-    // console.log('initMap invoked');
     var munich = { 
         // lat: 48.1295417,
         // lng: 11.5938205
@@ -186,8 +185,6 @@ var ViewModel = function() {
 
         // listens for clicks on the marker and then executes... 
         google.maps.event.addDomListener(locationItem.marker, 'click', function() {
-            // console.log('marker clicked!');
-            // console.log(this);
             bounceMarker(this);
             infowindow.open(map, locationItem.marker);
             infowindow.setContent(locationItem.contentString);
@@ -195,14 +192,12 @@ var ViewModel = function() {
 
         // listens for right clicks on the marker
         google.maps.event.addDomListener(locationItem.marker, 'rightclick', function() {
-            // console.log('right click on marker ' + locationItem.name);
             self.favouriteAttractions(locationItem);
         });
 
     });
 
     this.displayInfo = function(locationItem) {
-        // console.log('you clicked ' + locationItem.name);
         let marker = locationItem.marker
         bounceMarker(marker);
         infowindow.open(map, locationItem.marker);
@@ -264,7 +259,6 @@ var ViewModel = function() {
 
     // Sets CSS class '.open' to true if false and vice versa.
     this.openDrawer = function() {
-        // console.log("hamburgers!");
         self.toggleDrawer( !self.toggleDrawer() );
     };
 

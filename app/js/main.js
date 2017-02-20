@@ -75,7 +75,7 @@ var map;
 
 // Async callback to Google Maps API
 function initMap() {
-    console.log('initMap invoked');
+    // console.log('initMap invoked');
     var munich = { 
         // lat: 48.1295417,
         // lng: 11.5938205
@@ -119,7 +119,7 @@ var ViewModel = function() {
     var mParam = '&m=foursquare';
 
     var infowindow = new google.maps.InfoWindow({
-        maxWidth: 300,
+        maxWidth: 250,
     });
 
     // standard array to render markers and for Foursquare ajax request
@@ -204,11 +204,9 @@ var ViewModel = function() {
                 
                 '</div>'; // end infowindow div class
 
-            // config for infowindow if success
-            // locationItem.infowindow = new google.maps.InfoWindow({
-            locationItem.infowindow = google.maps.InfoWindow({
-                content: locationItem.contentString,
-                maxWidth: 300
+            // config for infowindow if successful
+            locationItem.infowindow = new google.maps.InfoWindow({
+                content: locationItem.contentString
             })
 
         // error handling for foursquare ajax request

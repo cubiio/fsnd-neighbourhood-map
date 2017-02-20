@@ -19,6 +19,7 @@ This is front end project is part of my Udacity Full Stack Nanodegree.
 - CSS and Flexbox
 - Javascript
 - Knockout.js
+- jQuery (for Ajax calls to Google Maps and Foursquare APIs)
 - Gulp task runner
 
 ### 3rd Party APIs

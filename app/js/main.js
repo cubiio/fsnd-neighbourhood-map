@@ -85,15 +85,13 @@ function initMap() {
 
     map = new google.maps.Map(document.getElementById('js_map'), {
         zoom: 13,
-        center: munich
+        center: munich,
+        gestureHandling: 'cooperative'
     });
 }
 
 // Constructor for each location i.e. venue displayed on the map
 var Location = function(data) {
-    // this.name = ko.observable(data.name);
-    // this.position = ko.observable(data.position);
-    // this.venueID = ko.observable(data.venueID);
     this.name = data.name;
     this.position = data.position;
     this.venueID = data.venueID;
@@ -101,19 +99,6 @@ var Location = function(data) {
     this.favourite = false;
 };
 
-// helper function(s)
-
-// config for location marker animation
-function toggleBounce(marker) {
-    if (marker.getAnimation() !== null) {
-        marker.setAnimation(null);
-    } else {
-        marker.setAnimation(google.maps.Animation.BOUNCE);
-        setTimeout(function() {
-            marker.setAnimation(null);
-        }, 2100);  // 3 bounces then stops
-    }
-}
 
 // alerts the user if Google Maps fails to load
 function googleError() {
@@ -233,27 +218,19 @@ var ViewModel = function() {
         })
 
         // listens for clicks on the marker and then executes... 
-        
         google.maps.event.addDomListener(locationItem.marker, 'click', function() {
-            console.log('marker clicked!');
-            console.log(this);
-            toggleBounce(this);
+            // console.log('marker clicked!');
+            // console.log(this);
+            bounceMarker(this);
             infowindow.open(map, locationItem.marker);
-            // set content for infowindow - how to?
             infowindow.setContent(locationItem.contentString);
         });
 
-        // locationItem.marker.addListener('click', function() {
-        //     // console.log('marker clicked!');
-        //     // console.log(this);
-        //     toggleBounce(this);
-        //     locationItem.infowindow.open(map, locationItem.marker);
-        // });
-
-        // locationItem.marker.addListener('rightclick', function() {
-        //     // console.log('right click on marker ' + locationItem.name);
-        //     self.favouriteAttractions(locationItem);
-        // })
+        // listens for right clicks on the marker
+        google.maps.event.addDomListener(locationItem.marker, 'rightclick', function() {
+            // console.log('right click on marker ' + locationItem.name);
+            self.favouriteAttractions(locationItem);
+        })
 
     });
 
@@ -261,7 +238,8 @@ var ViewModel = function() {
         // console.log('you clicked ' + locationItem.name);
         let marker = locationItem.marker
         bounceMarker(marker);
-        locationItem.infowindow.open(map, locationItem.marker);
+        infowindow.open(map, locationItem.marker);
+        infowindow.setContent(locationItem.contentString);
     };
 
     function bounceMarker(marker) {

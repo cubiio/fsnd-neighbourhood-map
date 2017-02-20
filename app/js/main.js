@@ -1,4 +1,4 @@
-/* jshint undef: true, unused: true, esversion: 6 */
+/* jshint undef: true, unused: true */
 /* globals ko, google, $ */
 
 // use strict
@@ -198,7 +198,7 @@ var ViewModel = function() {
     });
 
     this.displayInfo = function(locationItem) {
-        let marker = locationItem.marker;
+        var marker = locationItem.marker;
         bounceMarker(marker);
         infowindow.open(map, locationItem.marker);
         infowindow.setContent(locationItem.contentString);

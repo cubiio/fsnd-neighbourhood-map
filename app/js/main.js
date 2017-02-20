@@ -1,4 +1,4 @@
-/* jshint undef: true, unused: true */
+/* jshint undef: true, unused: true, esversion: 6 */
 /* globals ko, google, $ */
 
 // use strict
@@ -175,13 +175,13 @@ var ViewModel = function() {
             // config for infowindow if successful
             locationItem.infowindow = new google.maps.InfoWindow({
                 content: locationItem.contentString
-            })
+            });
 
         // error handling for foursquare ajax request
-        }).fail(function(e) {
+        }).fail(function() {
             document.getElementById('js_foursquare-error').innerHTML = 'Failed to get ' + 
             'venue information from Foursquare. Please check your internet connection, or try again later.';
-        })
+        });
 
         // listens for clicks on the marker and then executes... 
         google.maps.event.addDomListener(locationItem.marker, 'click', function() {
@@ -198,7 +198,7 @@ var ViewModel = function() {
     });
 
     this.displayInfo = function(locationItem) {
-        let marker = locationItem.marker
+        let marker = locationItem.marker;
         bounceMarker(marker);
         infowindow.open(map, locationItem.marker);
         infowindow.setContent(locationItem.contentString);

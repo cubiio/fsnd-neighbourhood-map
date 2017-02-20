@@ -231,7 +231,6 @@ var ViewModel = function() {
             // console.log('right click on marker ' + locationItem.name);
             self.favouriteAttractions(locationItem);
         })
-
     });
 
     this.displayInfo = function(locationItem) {
@@ -252,12 +251,6 @@ var ViewModel = function() {
             }, 2100);  // 3 bounces then stops
         }
     }
-    
-    // add listener to 'fav' star in in infowindow
-    // modify below?
-    // google.maps.event.addDomListener(mapDiv, 'click', function() {
-    //   window.alert('Map was clicked!');
-    // });
 
     // search and filter an array based on user input
 

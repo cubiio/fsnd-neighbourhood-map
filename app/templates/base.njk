@@ -24,17 +24,17 @@
         
     {% endblock content %}
 
-    <!-- build:js js/main.concat.js -->
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-3.1.1.min.js"><\/script>')</script>
-        <script src="js/vendor/plugins.js"></script>
-        <script type='text/javascript' src='js/lib/knockout-3.4.1.js'></script>
-        <script src="js/main.js"></script>
-    <!-- endbuild -->
-
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBMz_dtQTIrkczSEPgNogsdNZMI9GaWHmI&callback=initApp" onerror="googleError()"> 
     </script>
+    
+    <!-- build:js js/main.concat.js -->
+    <script type='text/javascript' src='js/lib/knockout-3.4.1.js'></script>
+    <script src="js/vendor/jquery-3.1.1.min.js"></script>
+    <script src="js/vendor/plugins.js"></script>
+    <script src="js/main.js"></script>
+    <!-- endbuild -->
+
 
 </body>
 </html>

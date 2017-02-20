@@ -113,7 +113,7 @@ var ViewModel = function() {
 
     // config for FourSquare ajax request
     var fsqClient = '?client_id=';
-    var fsqClientID = 'IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
+    var fsqClientID = 'SAM-IUPLCEDVWLKOD5HK2MGBV2AX3LUXULEBJ3R5SBBHWNYLPM5T';
     var fsqClientSecret = '&client_secret=FHY1LCHZ0K5OG3WRPZHF4VRR4WFMH304FA2ICGTD4SENJRUR';
     var vParam = '&v=20170215';
     var mParam = '&m=foursquare';
@@ -210,8 +210,8 @@ var ViewModel = function() {
             })
 
         // error handling for foursquare ajax request
-        }).fail(function() {
-            document.getElementById('js_foursquare-error').innerHTML += 'Failed to get ' + 
+        }).fail(function(e) {
+            document.getElementById('js_foursquare-error').innerHTML = 'Failed to get ' + 
             'venue information from Foursquare. Please check your internet connection, or try again later.';
         })
 

@@ -125,3 +125,15 @@ The key links are:
 - [Udacity forum re user input to filter an array](https://discussions.udacity.com/t/how-to-implement-knockout-into-the-project/181122)
 - [Utility functions in KnockoutJS - Knock Me Out](http://www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html)
 - [Array.prototype.indexOf() - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
+
+
+## Demo Screenshots
+
+**Main Page**
+![Main Page](/docs/home.png?raw=true "Main Page")
+
+**Info Window**
+![Info Window](/docs/infowindow.png?raw=true "Info Window")
+
+**Menu Filter**
+![Menu Filter](/docs/filter.png?raw=true "Menu Filter")
